@@ -238,25 +238,35 @@ export function PlanoAlimentarTab() {
     <div>
       {CENARIOS.map((cenario, ci) => (
         <ExportSection key={ci} title={cenario.nome}>
-          <Card shadow="none" classNames={{ base: "border border-slate-200 mb-4" }}>
-            <CardHeader className="pb-2 flex justify-between flex-wrap gap-2">
+          {/* Card do cenário — header verde */}
+          <Card shadow="none" classNames={{ base: "mb-4 overflow-hidden" }} style={{ border: "1px solid #c6f0df" }}>
+            <CardHeader
+              className="pb-3 flex justify-between flex-wrap gap-2"
+              style={{ background: "linear-gradient(135deg, var(--green-light), #f0fdf8)" }}
+            >
               <div className="flex gap-1 flex-wrap">
                 {cenario.dias.map(d => (
-                  <Chip key={d} size="sm" variant="flat" color="primary">{d}</Chip>
+                  <Chip key={d} size="sm" variant="solid" color="success" classNames={{ base: "bg-emerald-500 text-white" }}>{d}</Chip>
                 ))}
               </div>
-              <div className="text-sm font-bold text-slate-800">VET: {cenario.vet.toLocaleString('pt-BR')} kcal</div>
+              <div className="text-sm font-extrabold" style={{ color: "var(--green-dark)" }}>
+                VET: {cenario.vet.toLocaleString('pt-BR')} kcal
+              </div>
             </CardHeader>
-            <CardBody className="pt-0">
+            <CardBody className="pt-2">
               <MacroBar ptn={cenario.macros.ptn} cho={cenario.macros.cho} lip={cenario.macros.lip} />
             </CardBody>
           </Card>
 
           {cenario.refeicoes.map((ref, ri) => (
-            <Card key={ri} shadow="none" classNames={{ base: "border border-slate-100 mb-3" }}>
-              <CardHeader className="pb-1 flex justify-between items-center">
+            <Card key={ri} shadow="none" classNames={{ base: "mb-3 overflow-hidden" }} style={{ border: "1px solid #f1f5f9" }}>
+              {/* Cabeçalho da refeição com fundo levemente tintado */}
+              <CardHeader
+                className="pb-2 flex justify-between items-center"
+                style={{ background: "#f8fafc", borderBottom: "1px solid #f1f5f9" }}
+              >
                 <span className="font-semibold text-sm text-slate-800">{ref.emoji} {ref.nome}</span>
-                <Chip size="sm" variant="flat">{ref.horario}</Chip>
+                <Chip size="sm" variant="flat" color="default">{ref.horario}</Chip>
               </CardHeader>
               <CardBody className="pt-0">
                 <table className="w-full text-xs">
@@ -264,35 +274,38 @@ export function PlanoAlimentarTab() {
                     <tr className="border-b border-slate-100">
                       <th className="text-left py-1 font-medium text-slate-400 text-[10px] uppercase">Alimento</th>
                       <th className="text-right py-1 font-medium text-slate-400 text-[10px] uppercase w-16">Qtd</th>
-                      <th className="text-right py-1 font-medium text-slate-400 text-[10px] uppercase w-10">PTN</th>
-                      <th className="text-right py-1 font-medium text-slate-400 text-[10px] uppercase w-10">CHO</th>
-                      <th className="text-right py-1 font-medium text-slate-400 text-[10px] uppercase w-10">LIP</th>
-                      <th className="text-right py-1 font-medium text-slate-400 text-[10px] uppercase w-12">kcal</th>
+                      <th className="text-right py-1 font-medium text-[10px] uppercase w-10" style={{ color: "var(--protein)" }}>PTN</th>
+                      <th className="text-right py-1 font-medium text-[10px] uppercase w-10" style={{ color: "var(--carbs)" }}>CHO</th>
+                      <th className="text-right py-1 font-medium text-[10px] uppercase w-10" style={{ color: "var(--fat)" }}>LIP</th>
+                      <th className="text-right py-1 font-medium text-slate-500 text-[10px] uppercase w-12">kcal</th>
                     </tr>
                   </thead>
                   <tbody>
                     {ref.alimentos.map((al, ai) => (
-                      <tr key={ai} className="border-b border-slate-50">
+                      <tr key={ai} className="border-b border-slate-50 hover:bg-slate-50">
                         <td className="py-1 text-slate-700">{al.nome}</td>
-                        <td className="py-1 text-right text-slate-500">{al.qtd}</td>
+                        <td className="py-1 text-right text-slate-400">{al.qtd}</td>
                         <td className="py-1 text-right text-slate-500">{al.ptn}</td>
                         <td className="py-1 text-right text-slate-500">{al.cho}</td>
                         <td className="py-1 text-right text-slate-500">{al.lip}</td>
-                        <td className="py-1 text-right font-medium text-slate-700">{al.kcal}</td>
+                        <td className="py-1 text-right font-semibold text-slate-700">{al.kcal}</td>
                       </tr>
                     ))}
                     {ref.obs && (
                       <tr>
-                        <td colSpan={6} className="py-2 text-[10px] text-slate-400 italic border-t border-slate-50">{ref.obs}</td>
+                        <td colSpan={6} className="py-2 text-[10px] italic border-t border-slate-50" style={{ color: "var(--green-dark)", background: "var(--green-light)" }}>
+                          💡 {ref.obs}
+                        </td>
                       </tr>
                     )}
                   </tbody>
                 </table>
-                <div className="flex gap-4 mt-2 pt-2 border-t border-slate-100">
-                  <span className="text-xs"><span className="font-semibold" style={{ color: "var(--protein)" }}>PTN</span> <span className="text-slate-600 ml-1">{ref.totais.ptn}g</span></span>
-                  <span className="text-xs"><span className="font-semibold" style={{ color: "var(--carbs)" }}>CHO</span> <span className="text-slate-600 ml-1">{ref.totais.cho}g</span></span>
-                  <span className="text-xs"><span className="font-semibold" style={{ color: "var(--fat)" }}>LIP</span> <span className="text-slate-600 ml-1">{ref.totais.lip}g</span></span>
-                  <span className="text-xs font-bold text-slate-800 ml-auto">{ref.totais.kcal} kcal</span>
+                {/* Totais coloridos */}
+                <div className="flex gap-3 mt-2 pt-2 border-t border-slate-100">
+                  <span className="text-xs px-2 py-0.5 rounded-md font-semibold" style={{ background: "#eef2ff", color: "var(--protein)" }}>PTN {ref.totais.ptn}g</span>
+                  <span className="text-xs px-2 py-0.5 rounded-md font-semibold" style={{ background: "#fffbeb", color: "#b45309" }}>CHO {ref.totais.cho}g</span>
+                  <span className="text-xs px-2 py-0.5 rounded-md font-semibold" style={{ background: "#eff6ff", color: "#1d4ed8" }}>LIP {ref.totais.lip}g</span>
+                  <span className="text-xs font-extrabold text-slate-800 ml-auto">{ref.totais.kcal} kcal</span>
                 </div>
               </CardBody>
             </Card>

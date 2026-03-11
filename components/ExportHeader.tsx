@@ -1,5 +1,3 @@
-import { Divider } from "@heroui/react";
-
 export function ExportHeader() {
   return (
     <div className="mb-5">
@@ -14,7 +12,7 @@ export function ExportHeader() {
           <div>
             <div className="font-bold text-sm text-slate-900 leading-tight">Dra. Maria Fernanda Costa</div>
             <div className="text-xs text-slate-500 mt-0.5">Nutricionista · CRN 12345/SP</div>
-            <div className="text-xs text-slate-400 mt-0.5">DietFlow — Nutrição Clínica Personalizada</div>
+            <div className="text-xs mt-0.5" style={{ color: "var(--green-dark)" }}>DietFlow — Nutrição Clínica Personalizada</div>
           </div>
         </div>
         <div className="text-right text-xs text-slate-400 flex-shrink-0 max-w-[240px]">
@@ -23,12 +21,16 @@ export function ExportHeader() {
           <div>São Paulo, SP · CEP 01310-100</div>
         </div>
       </div>
-      <div className="flex items-center justify-between mt-3 px-3 py-2 bg-slate-50 rounded-lg">
-        <span className="text-xs font-bold text-slate-800">Ana Silva Santos</span>
-        <div className="flex gap-4 text-xs text-slate-500">
-          <span><span className="font-medium text-slate-600">Idade:</span> 32 anos</span>
-          <span><span className="font-medium text-slate-600">Data:</span> 11/03/2026</span>
-          <span><span className="font-medium text-slate-600">Registro:</span> #00485</span>
+      {/* Patient bar — verde suave */}
+      <div
+        className="flex items-center justify-between mt-3 px-4 py-2.5 rounded-lg"
+        style={{ background: "var(--green-light)", border: "1px solid #c6f0df" }}
+      >
+        <span className="text-xs font-bold" style={{ color: "var(--green-dark)" }}>Ana Silva Santos</span>
+        <div className="flex gap-4 text-xs" style={{ color: "#3d8f6b" }}>
+          <span><span className="font-semibold">Idade:</span> 32 anos</span>
+          <span><span className="font-semibold">Data:</span> 11/03/2026</span>
+          <span><span className="font-semibold">Registro:</span> #00485</span>
         </div>
       </div>
     </div>

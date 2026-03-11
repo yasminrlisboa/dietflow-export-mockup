@@ -13,14 +13,14 @@ import { AntropometriaTab } from "@/components/tabs/AntropometriaTab";
 import { EvolucaoTab } from "@/components/tabs/EvolucaoTab";
 
 const TABS = [
-  { key: "plano", label: "Plano Alimentar", title: "Plano Alimentar", Component: PlanoAlimentarTab },
-  { key: "resultados", label: "Resultados de Exames", title: "Resultados de Exames", Component: ResultadosExamesTab },
-  { key: "presc-exames", label: "Prescrição de Exames", title: "Prescrição de Exames", Component: PrescricaoExamesTab },
-  { key: "suplementos", label: "Prescrição de Suplementos", title: "Prescrição de Suplementos", Component: PrescricaoSuplementosTab },
-  { key: "anamnese", label: "Anamnese", title: "Anamnese", Component: AnamneseTab },
-  { key: "calculo", label: "Cálculo Energético", title: "Cálculo Energético", Component: CalculoTab },
-  { key: "antropometria", label: "Antropometria", title: "Antropometria", Component: AntropometriaTab },
-  { key: "evolucao", label: "Evolução", title: "Evolução do Paciente", Component: EvolucaoTab },
+  { key: "plano",         label: "Plano Alimentar",         icon: "🥗", title: "Plano Alimentar",         Component: PlanoAlimentarTab },
+  { key: "resultados",    label: "Resultados de Exames",    icon: "🧪", title: "Resultados de Exames",    Component: ResultadosExamesTab },
+  { key: "presc-exames",  label: "Prescrição de Exames",    icon: "📋", title: "Prescrição de Exames",    Component: PrescricaoExamesTab },
+  { key: "suplementos",   label: "Suplementos",             icon: "💊", title: "Prescrição de Suplementos", Component: PrescricaoSuplementosTab },
+  { key: "anamnese",      label: "Anamnese",                icon: "📝", title: "Anamnese",                Component: AnamneseTab },
+  { key: "calculo",       label: "Cálculo Energético",      icon: "⚡", title: "Cálculo Energético",      Component: CalculoTab },
+  { key: "antropometria", label: "Antropometria",           icon: "📐", title: "Antropometria",           Component: AntropometriaTab },
+  { key: "evolucao",      label: "Evolução",                icon: "📈", title: "Evolução do Paciente",    Component: EvolucaoTab },
 ];
 
 export default function Home() {
@@ -29,49 +29,70 @@ export default function Home() {
   const { Component } = current;
 
   return (
-    <div className="min-h-screen flex" style={{ background: "#e8edf3" }}>
-      {/* Sidebar de abas */}
+    <div className="min-h-screen flex" style={{ background: "#dde3ea" }}>
+
+      {/* ── Sidebar ── */}
       <div
-        className="flex flex-col py-8 px-3 gap-1 sticky top-0 h-screen overflow-y-auto"
-        style={{ width: 200, background: "#fff", borderRight: "1px solid #e2e8f0", flexShrink: 0 }}
+        className="flex flex-col sticky top-0 h-screen overflow-y-auto"
+        style={{ width: 210, background: "#fff", borderRight: "1px solid #e2e8f0", flexShrink: 0 }}
       >
-        <div className="mb-5 px-2">
-          <div className="flex items-center gap-2 mb-1">
+        {/* Logo */}
+        <div className="px-4 py-5 border-b border-slate-100">
+          <div className="flex items-center gap-2.5">
             <div
-              className="w-7 h-7 rounded-lg flex items-center justify-center text-white font-extrabold text-xs"
+              className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-extrabold text-sm"
               style={{ background: "linear-gradient(135deg, var(--green), var(--green-dark))" }}
             >
               DF
             </div>
-            <span className="text-xs font-bold text-slate-700">DietFlow</span>
+            <div>
+              <div className="text-xs font-bold text-slate-800">DietFlow</div>
+              <div className="text-[10px]" style={{ color: "var(--green-dark)" }}>Exportações</div>
+            </div>
           </div>
-          <p className="text-[10px] text-slate-400">Exportações</p>
         </div>
 
-        {TABS.map(tab => (
-          <button
-            key={tab.key}
-            onClick={() => setActive(tab.key)}
-            className="text-left px-3 py-2 rounded-lg text-xs font-medium transition-all"
-            style={{
-              background: active === tab.key ? "var(--green-light)" : "transparent",
-              color: active === tab.key ? "var(--green-dark)" : "#64748b",
-              borderLeft: active === tab.key ? "3px solid var(--green)" : "3px solid transparent",
-              fontWeight: active === tab.key ? 600 : 400,
-            }}
-          >
-            {tab.label}
-          </button>
-        ))}
+        {/* Nav */}
+        <nav className="flex flex-col gap-0.5 p-3 flex-1">
+          {TABS.map(tab => {
+            const isActive = active === tab.key;
+            return (
+              <button
+                key={tab.key}
+                onClick={() => setActive(tab.key)}
+                className="text-left px-3 py-2.5 rounded-xl text-xs transition-all flex items-center gap-2.5"
+                style={{
+                  background: isActive ? "var(--green-light)" : "transparent",
+                  color: isActive ? "var(--green-dark)" : "#64748b",
+                  fontWeight: isActive ? 600 : 400,
+                  boxShadow: isActive ? "inset 3px 0 0 var(--green)" : "none",
+                }}
+              >
+                <span>{tab.icon}</span>
+                <span>{tab.label}</span>
+              </button>
+            );
+          })}
+        </nav>
+
+        {/* Rodapé sidebar */}
+        <div className="px-4 py-4 border-t border-slate-100">
+          <div className="text-[10px] text-slate-400">Ana Silva Santos</div>
+          <div className="text-[10px] text-slate-300">Registro #00485</div>
+        </div>
       </div>
 
-      {/* Documento A4 */}
-      <div className="flex-1 py-8 px-8 overflow-y-auto">
+      {/* ── Documento A4 ── */}
+      <div className="flex-1 py-10 px-10 overflow-y-auto">
         <div className="a4-page">
           <ExportHeader />
-          <div className="mb-5">
-            <h1 className="text-xl font-extrabold text-slate-900 mb-1">{current.title}</h1>
-            <div className="h-0.5 w-12 rounded-full" style={{ background: "var(--green)" }} />
+          {/* Título do documento */}
+          <div className="mb-6 flex items-center gap-3">
+            <span className="text-2xl">{current.icon}</span>
+            <div>
+              <h1 className="text-xl font-extrabold text-slate-900 leading-tight">{current.title}</h1>
+              <div className="h-0.5 w-10 rounded-full mt-1" style={{ background: "var(--green)" }} />
+            </div>
           </div>
           <Component />
           <ExportFooter docTitle={current.title} />
