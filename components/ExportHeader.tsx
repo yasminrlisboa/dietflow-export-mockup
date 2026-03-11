@@ -28,8 +28,8 @@ export function ExportHeader() {
         <span className="text-sm font-semibold text-slate-800">Ana Silva Santos</span>
         <div className="flex gap-4">
           <span className="text-xs text-slate-500"><span className="font-medium text-slate-600">Idade:</span> 32 anos</span>
+          <span className="text-xs text-slate-500"><span className="font-medium text-slate-600">Telefone:</span> (11) 99876-5432</span>
           <span className="text-xs text-slate-500"><span className="font-medium text-slate-600">Data:</span> 11/03/2026</span>
-          <span className="text-xs text-slate-500"><span className="font-medium text-slate-600">Registro:</span> #00485</span>
         </div>
       </div>
     </div>

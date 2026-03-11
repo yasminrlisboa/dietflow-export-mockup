@@ -262,11 +262,13 @@ export function PlanoAlimentarTab() {
             <Card key={ri} shadow="none" classNames={{ base: "mb-3 overflow-hidden" }} style={{ border: "1px solid #f1f5f9" }}>
               {/* Cabeçalho da refeição com fundo levemente tintado */}
               <CardHeader
-                className="pb-2 flex justify-between items-center"
+                className="pb-2"
                 style={{ background: "#f8fafc", borderBottom: "1px solid #f1f5f9" }}
               >
-                <span className="font-semibold text-sm text-slate-800">{ref.emoji} {ref.nome}</span>
-                <Chip size="sm" variant="flat" color="default">{ref.horario}</Chip>
+                <span className="font-semibold text-sm text-slate-800">
+                  <span className="text-slate-400 font-normal mr-2">{ref.horario}</span>
+                  {ref.emoji} {ref.nome}
+                </span>
               </CardHeader>
               <CardBody className="pt-0">
                 <table className="w-full text-xs">
