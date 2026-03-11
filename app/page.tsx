@@ -1,65 +1,58 @@
-import Image from "next/image";
+"use client";
+
+import { Tabs, Tab } from "@heroui/react";
+import { ExportHeader } from "@/components/ExportHeader";
+import { ExportFooter } from "@/components/ExportFooter";
+import { PlanoAlimentarTab } from "@/components/tabs/PlanoAlimentarTab";
+import { ResultadosExamesTab } from "@/components/tabs/ResultadosExamesTab";
+import { PrescricaoExamesTab } from "@/components/tabs/PrescricaoExamesTab";
+import { PrescricaoSuplementosTab } from "@/components/tabs/PrescricaoSuplementosTab";
+import { AnamneseTab } from "@/components/tabs/AnamneseTab";
+import { CalculoTab } from "@/components/tabs/CalculoTab";
+import { AntropometriaTab } from "@/components/tabs/AntropometriaTab";
+import { EvolucaoTab } from "@/components/tabs/EvolucaoTab";
+
+const TABS = [
+  { key: "plano", label: "Plano Alimentar", title: "Plano Alimentar", Component: PlanoAlimentarTab },
+  { key: "resultados", label: "Resultados de Exames", title: "Resultados de Exames", Component: ResultadosExamesTab },
+  { key: "presc-exames", label: "Prescrição de Exames", title: "Prescrição de Exames", Component: PrescricaoExamesTab },
+  { key: "suplementos", label: "Prescrição de Suplementos", title: "Prescrição de Suplementos", Component: PrescricaoSuplementosTab },
+  { key: "anamnese", label: "Anamnese", title: "Anamnese", Component: AnamneseTab },
+  { key: "calculo", label: "Cálculo Energético", title: "Cálculo Energético", Component: CalculoTab },
+  { key: "antropometria", label: "Antropometria", title: "Antropometria", Component: AntropometriaTab },
+  { key: "evolucao", label: "Evolução", title: "Evolução do Paciente", Component: EvolucaoTab },
+];
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <div className="min-h-screen py-8" style={{ background: "#e8edf3" }}>
+      <div style={{ maxWidth: "860px", margin: "0 auto", padding: "0 16px" }}>
+        <div className="mb-6">
+          <Tabs
+            aria-label="Documentos de exportação"
+            variant="underlined"
+            color="primary"
+            classNames={{
+              tabList: "flex-wrap gap-1 bg-white rounded-xl p-2 shadow-sm",
+              tab: "text-xs",
+            }}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+            {TABS.map(({ key, label, title, Component }) => (
+              <Tab key={key} title={label}>
+                <div className="a4-page mt-4">
+                  <ExportHeader />
+                  <div className="mb-5">
+                    <h1 className="text-xl font-extrabold text-slate-900 mb-1">{title}</h1>
+                    <div className="h-0.5 w-12 rounded-full" style={{ background: "var(--green)" }} />
+                  </div>
+                  <Component />
+                  <ExportFooter docTitle={title} />
+                </div>
+              </Tab>
+            ))}
+          </Tabs>
         </div>
-      </main>
+      </div>
     </div>
   );
 }
