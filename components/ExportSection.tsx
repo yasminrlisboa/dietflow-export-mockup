@@ -1,12 +1,9 @@
 export function ExportSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="mb-7">
-      <div className="flex items-center gap-2 mb-3">
-        <div className="w-1 h-4 rounded-full flex-shrink-0" style={{ background: "var(--green)" }} />
-        <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: "var(--green-dark)" }}>
-          {title}
-        </span>
-        <div className="flex-1 h-px" style={{ background: "linear-gradient(to right, #e2e8f0, transparent)" }} />
+    <div className="mb-6">
+      {/* Padrão DietFlow: border-b cinza, título bold escuro */}
+      <div className="border-b border-gray-200 pb-2 mb-3">
+        <h2 className="text-base font-bold text-gray-800">{title}</h2>
       </div>
       {children}
     </div>

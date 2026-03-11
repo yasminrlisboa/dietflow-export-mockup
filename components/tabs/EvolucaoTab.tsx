@@ -102,13 +102,13 @@ export function EvolucaoTab() {
       <ExportSection title="Evolução Antropométrica Completa">
         <Table removeWrapper aria-label="Evolução antropométrica" isStriped>
           <TableHeader>
-            <TableColumn className="text-[10px] uppercase">Data</TableColumn>
-            <TableColumn className="text-right text-[10px] uppercase">Peso (kg)</TableColumn>
-            <TableColumn className="text-right text-[10px] uppercase">Δ</TableColumn>
-            <TableColumn className="text-right text-[10px] uppercase">IMC</TableColumn>
-            <TableColumn className="text-right text-[10px] uppercase">% Gordura</TableColumn>
-            <TableColumn className="text-right text-[10px] uppercase">Massa Magra</TableColumn>
-            <TableColumn className="text-right text-[10px] uppercase">C. Abdominal</TableColumn>
+            <TableColumn className="text-xs font-medium uppercase tracking-wider">Data</TableColumn>
+            <TableColumn className="text-right text-xs font-medium uppercase tracking-wider">Peso (kg)</TableColumn>
+            <TableColumn className="text-right text-xs font-medium uppercase tracking-wider">Δ</TableColumn>
+            <TableColumn className="text-right text-xs font-medium uppercase tracking-wider">IMC</TableColumn>
+            <TableColumn className="text-right text-xs font-medium uppercase tracking-wider">% Gordura</TableColumn>
+            <TableColumn className="text-right text-xs font-medium uppercase tracking-wider">Massa Magra</TableColumn>
+            <TableColumn className="text-right text-xs font-medium uppercase tracking-wider">C. Abdominal</TableColumn>
           </TableHeader>
           <TableBody items={AVALIACOES}>
             {(av) => (

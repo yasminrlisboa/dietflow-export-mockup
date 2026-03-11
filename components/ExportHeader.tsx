@@ -10,27 +10,26 @@ export function ExportHeader() {
             DF
           </div>
           <div>
-            <div className="font-bold text-sm text-slate-900 leading-tight">Dra. Maria Fernanda Costa</div>
+            {/* labelLarge — 14px/500 */}
+            <div className="text-sm font-semibold text-slate-900 leading-tight">Dra. Maria Fernanda Costa</div>
+            {/* bodySmall — 12px */}
             <div className="text-xs text-slate-500 mt-0.5">Nutricionista · CRN 12345/SP</div>
-            <div className="text-xs mt-0.5" style={{ color: "var(--green-dark)" }}>DietFlow — Nutrição Clínica Personalizada</div>
+            <div className="text-xs text-slate-400 mt-0.5">DietFlow — Nutrição Clínica Personalizada</div>
           </div>
         </div>
-        <div className="text-right text-xs text-slate-400 flex-shrink-0 max-w-[240px]">
-          <div className="font-semibold text-slate-600 text-xs">Clínica NutriVida</div>
-          <div className="mt-0.5">Av. Paulista, 1000 · Bela Vista</div>
-          <div>São Paulo, SP · CEP 01310-100</div>
+        <div className="text-right flex-shrink-0 max-w-[240px]">
+          <div className="text-xs font-semibold text-slate-600">Clínica NutriVida</div>
+          <div className="text-xs text-slate-400 mt-0.5">Av. Paulista, 1000 · Bela Vista</div>
+          <div className="text-xs text-slate-400">São Paulo, SP · CEP 01310-100</div>
         </div>
       </div>
-      {/* Patient bar — verde suave */}
-      <div
-        className="flex items-center justify-between mt-3 px-4 py-2.5 rounded-lg"
-        style={{ background: "var(--green-light)", border: "1px solid #c6f0df" }}
-      >
-        <span className="text-xs font-bold" style={{ color: "var(--green-dark)" }}>Ana Silva Santos</span>
-        <div className="flex gap-4 text-xs" style={{ color: "#3d8f6b" }}>
-          <span><span className="font-semibold">Idade:</span> 32 anos</span>
-          <span><span className="font-semibold">Data:</span> 11/03/2026</span>
-          <span><span className="font-semibold">Registro:</span> #00485</span>
+      {/* Patient bar — slate-50, como era antes */}
+      <div className="flex items-center justify-between mt-3 px-3 py-2 bg-slate-50 rounded-lg border border-slate-100">
+        <span className="text-sm font-semibold text-slate-800">Ana Silva Santos</span>
+        <div className="flex gap-4">
+          <span className="text-xs text-slate-500"><span className="font-medium text-slate-600">Idade:</span> 32 anos</span>
+          <span className="text-xs text-slate-500"><span className="font-medium text-slate-600">Data:</span> 11/03/2026</span>
+          <span className="text-xs text-slate-500"><span className="font-medium text-slate-600">Registro:</span> #00485</span>
         </div>
       </div>
     </div>

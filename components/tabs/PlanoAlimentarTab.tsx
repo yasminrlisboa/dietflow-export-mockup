@@ -272,12 +272,12 @@ export function PlanoAlimentarTab() {
                 <table className="w-full text-xs">
                   <thead>
                     <tr className="border-b border-slate-100">
-                      <th className="text-left py-1 font-medium text-slate-400 text-[10px] uppercase">Alimento</th>
-                      <th className="text-right py-1 font-medium text-slate-400 text-[10px] uppercase w-16">Qtd</th>
-                      <th className="text-right py-1 font-medium text-[10px] uppercase w-10" style={{ color: "var(--protein)" }}>PTN</th>
-                      <th className="text-right py-1 font-medium text-[10px] uppercase w-10" style={{ color: "var(--carbs)" }}>CHO</th>
-                      <th className="text-right py-1 font-medium text-[10px] uppercase w-10" style={{ color: "var(--fat)" }}>LIP</th>
-                      <th className="text-right py-1 font-medium text-slate-500 text-[10px] uppercase w-12">kcal</th>
+                      <th className="text-left py-1.5 text-xs font-medium uppercase tracking-wider text-slate-400">Alimento</th>
+                      <th className="text-right py-1.5 text-xs font-medium uppercase tracking-wider text-slate-400 w-16">Qtd</th>
+                      <th className="text-right py-1.5 text-xs font-medium uppercase tracking-wider w-10" style={{ color: "var(--protein)" }}>PTN</th>
+                      <th className="text-right py-1.5 text-xs font-medium uppercase tracking-wider w-10" style={{ color: "var(--carbs)" }}>CHO</th>
+                      <th className="text-right py-1.5 text-xs font-medium uppercase tracking-wider w-10" style={{ color: "var(--fat)" }}>LIP</th>
+                      <th className="text-right py-1.5 text-xs font-medium uppercase tracking-wider text-slate-400 w-12">kcal</th>
                     </tr>
                   </thead>
                   <tbody>

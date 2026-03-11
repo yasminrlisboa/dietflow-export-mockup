@@ -125,11 +125,11 @@ export function ResultadosExamesTab() {
             <CardBody className="pt-0">
               <Table removeWrapper aria-label={grupo.nome} isStriped>
                 <TableHeader>
-                  <TableColumn className="text-[10px] uppercase">Exame</TableColumn>
-                  <TableColumn className="text-right text-[10px] uppercase">Resultado</TableColumn>
-                  <TableColumn className="text-[10px] uppercase">Referência</TableColumn>
-                  <TableColumn className="text-[10px] uppercase">Range</TableColumn>
-                  <TableColumn className="text-[10px] uppercase">Status</TableColumn>
+                  <TableColumn className="text-xs font-medium uppercase tracking-wider">Exame</TableColumn>
+                  <TableColumn className="text-right text-xs font-medium uppercase tracking-wider">Resultado</TableColumn>
+                  <TableColumn className="text-xs font-medium uppercase tracking-wider">Referência</TableColumn>
+                  <TableColumn className="text-xs font-medium uppercase tracking-wider">Range</TableColumn>
+                  <TableColumn className="text-xs font-medium uppercase tracking-wider">Status</TableColumn>
                 </TableHeader>
                 <TableBody items={grupo.resultados}>
                   {(res) => (

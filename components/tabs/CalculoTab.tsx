@@ -33,7 +33,7 @@ export function CalculoTab() {
                 { label: "% Gordura", value: "32,8%" },
               ].map(({ label, value }) => (
                 <div key={label}>
-                  <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">{label}</div>
+                  <div className="text-xs font-medium uppercase tracking-wider text-slate-400">{label}</div>
                   <div className="text-sm font-semibold text-slate-800 mt-0.5">{value}</div>
                 </div>
               ))}
@@ -230,12 +230,12 @@ export function CalculoTab() {
 
           <Table removeWrapper aria-label={`Distribuição ${cenario.nome}`}>
             <TableHeader>
-              <TableColumn className="text-[10px] uppercase">Refeição</TableColumn>
-              <TableColumn className="text-[10px] uppercase">Horário</TableColumn>
-              <TableColumn className="text-right text-[10px] uppercase">PTN</TableColumn>
-              <TableColumn className="text-right text-[10px] uppercase">CHO</TableColumn>
-              <TableColumn className="text-right text-[10px] uppercase">LIP</TableColumn>
-              <TableColumn className="text-right text-[10px] uppercase">kcal</TableColumn>
+              <TableColumn className="text-xs font-medium uppercase tracking-wider">Refeição</TableColumn>
+              <TableColumn className="text-xs font-medium uppercase tracking-wider">Horário</TableColumn>
+              <TableColumn className="text-right text-xs font-medium uppercase tracking-wider">PTN</TableColumn>
+              <TableColumn className="text-right text-xs font-medium uppercase tracking-wider">CHO</TableColumn>
+              <TableColumn className="text-right text-xs font-medium uppercase tracking-wider">LIP</TableColumn>
+              <TableColumn className="text-right text-xs font-medium uppercase tracking-wider">kcal</TableColumn>
             </TableHeader>
             <TableBody items={cenario.refeicoes}>
               {(ref) => (

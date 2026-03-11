@@ -22,7 +22,7 @@ export function AntropometriaTab() {
                 { label: "Envergadura", value: "169 cm" },
               ].map(({ label, value }) => (
                 <div key={label}>
-                  <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">{label}</div>
+                  <div className="text-xs font-medium uppercase tracking-wider text-slate-400">{label}</div>
                   <div className="text-sm font-semibold text-slate-800 mt-0.5">{value}</div>
                 </div>
               ))}
@@ -43,7 +43,7 @@ export function AntropometriaTab() {
             <Card key={idx.label} shadow="none" classNames={{ base: "border border-slate-200" }}>
               <CardBody className="pb-3">
                 <div className="flex justify-between items-start mb-2">
-                  <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">{idx.label}</div>
+                  <div className="text-xs font-medium uppercase tracking-wider text-slate-400">{idx.label}</div>
                   <Chip size="sm" variant="flat" color={idx.cor}>{idx.classif}</Chip>
                 </div>
                 <div className="text-xl font-extrabold text-slate-800 mb-2">{idx.value}</div>
@@ -119,10 +119,10 @@ export function AntropometriaTab() {
       <ExportSection title="Circunferências">
         <Table removeWrapper aria-label="Circunferências" isStriped>
           <TableHeader>
-            <TableColumn className="text-[10px] uppercase">Medida</TableColumn>
-            <TableColumn className="text-right text-[10px] uppercase">Valor (cm)</TableColumn>
-            <TableColumn className="text-right text-[10px] uppercase">Referência</TableColumn>
-            <TableColumn className="text-[10px] uppercase">Status</TableColumn>
+            <TableColumn className="text-xs font-medium uppercase tracking-wider">Medida</TableColumn>
+            <TableColumn className="text-right text-xs font-medium uppercase tracking-wider">Valor (cm)</TableColumn>
+            <TableColumn className="text-right text-xs font-medium uppercase tracking-wider">Referência</TableColumn>
+            <TableColumn className="text-xs font-medium uppercase tracking-wider">Status</TableColumn>
           </TableHeader>
           <TableBody items={[
             { key: "cervical", nome: "Cervical", valor: "36,5", ref: "< 38 cm" },
@@ -156,11 +156,11 @@ export function AntropometriaTab() {
       <ExportSection title="Dobras Cutâneas (mm)">
         <Table removeWrapper aria-label="Dobras cutâneas">
           <TableHeader>
-            <TableColumn className="text-[10px] uppercase">Dobra</TableColumn>
-            <TableColumn className="text-right text-[10px] uppercase">Med. 1</TableColumn>
-            <TableColumn className="text-right text-[10px] uppercase">Med. 2</TableColumn>
-            <TableColumn className="text-right text-[10px] uppercase">Med. 3</TableColumn>
-            <TableColumn className="text-right text-[10px] uppercase">Média</TableColumn>
+            <TableColumn className="text-xs font-medium uppercase tracking-wider">Dobra</TableColumn>
+            <TableColumn className="text-right text-xs font-medium uppercase tracking-wider">Med. 1</TableColumn>
+            <TableColumn className="text-right text-xs font-medium uppercase tracking-wider">Med. 2</TableColumn>
+            <TableColumn className="text-right text-xs font-medium uppercase tracking-wider">Med. 3</TableColumn>
+            <TableColumn className="text-right text-xs font-medium uppercase tracking-wider">Média</TableColumn>
           </TableHeader>
           <TableBody items={[
             { key: "peitoral", nome: "Peitoral", m1: "22", m2: "23", m3: "22", media: "22.3", isTotal: false },
