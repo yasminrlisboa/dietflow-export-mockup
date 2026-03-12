@@ -11,12 +11,14 @@ import { AnamneseTab } from "@/components/tabs/AnamneseTab";
 import { CalculoTab } from "@/components/tabs/CalculoTab";
 import { AntropometriaTab } from "@/components/tabs/AntropometriaTab";
 import { EvolucaoTab } from "@/components/tabs/EvolucaoTab";
+import { PrescricaoFormulacaoTab } from "@/components/tabs/PrescricaoFormulacaoTab";
 
 const TABS = [
   { key: "plano",         label: "Plano Alimentar",         icon: "🥗", title: "Plano Alimentar",         Component: PlanoAlimentarTab },
   { key: "resultados",    label: "Resultados de Exames",    icon: "🧪", title: "Resultados de Exames",    Component: ResultadosExamesTab },
   { key: "presc-exames",  label: "Prescrição de Exames",    icon: "📋", title: "Prescrição de Exames",    Component: PrescricaoExamesTab },
   { key: "suplementos",   label: "Suplementos",             icon: "💊", title: "Prescrição de Suplementos", Component: PrescricaoSuplementosTab },
+  { key: "formulacao",    label: "Formulação Magistral",    icon: "⚗️",  title: "Prescrição de Formulação Magistral", Component: PrescricaoFormulacaoTab },
   { key: "anamnese",      label: "Anamnese",                icon: "📝", title: "Anamnese",                Component: AnamneseTab },
   { key: "calculo",       label: "Cálculo Energético",      icon: "⚡", title: "Cálculo Energético",      Component: CalculoTab },
   { key: "antropometria", label: "Antropometria",           icon: "📐", title: "Antropometria",           Component: AntropometriaTab },
