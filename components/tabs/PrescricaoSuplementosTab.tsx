@@ -128,9 +128,9 @@ const SUPLEMENTOS = [
 export function PrescricaoSuplementosTab() {
   return (
     <div>
-      <Card shadow="none" classNames={{ base: "border border-green-100 bg-green-50 mb-5" }}>
+      <Card shadow="none" classNames={{ base: "border border-blue-100 bg-blue-50 mb-5" }}>
         <CardBody className="py-3">
-          <p className="text-xs text-green-700">
+          <p className="text-xs text-blue-800">
             <span className="font-semibold">Protocolo vigente desde 11/03/2026.</span> Suplementação individualizada com base em exames laboratoriais e avaliação nutricional.
             Reavaliação em 90 dias ou conforme evolução dos exames.
           </p>

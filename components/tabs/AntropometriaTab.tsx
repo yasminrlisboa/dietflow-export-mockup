@@ -1,12 +1,164 @@
 "use client";
-import { Card, CardBody, CardHeader, Chip, Progress, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Divider } from "@heroui/react";
+import { Card, CardBody, CardHeader, Chip, Progress } from "@heroui/react";
 import { ExportSection } from "../ExportSection";
+import {
+  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip,
+  ResponsiveContainer, Legend, BarChart, Bar, ReferenceLine,
+} from "recharts";
+
+const AVALIACOES = ["Jun/25", "Set/25", "Dez/25", "Mar/26"];
+
+// ─── DADOS DE EVOLUÇÃO ───────────────────────────────────────────────────────
+
+const EVOLUCAO_INDICES = [
+  {
+    label: "Peso (kg)",
+    valores: [82.0, 80.5, 79.2, 78.0],
+    meta: 68.0,
+    cor: "#6366f1",
+  },
+  {
+    label: "IMC (kg/m²)",
+    valores: [29.1, 28.5, 28.0, 27.6],
+    meta: 22.0,
+    cor: "#f59e0b",
+  },
+  {
+    label: "% Gordura",
+    valores: [35.2, 34.5, 33.6, 32.8],
+    meta: 25.0,
+    cor: "#ef4444",
+  },
+  {
+    label: "Massa Magra (kg)",
+    valores: [53.1, 52.7, 52.5, 52.4],
+    meta: 52.0,
+    cor: "#10b981",
+  },
+];
+
+const EVOLUCAO_CIRCUNFERENCIAS = [
+  { label: "Cintura",   valores: [82.0, 80.5, 79.5, 78.5], ref: 80 },
+  { label: "Quadril",   valores: [106.0, 104.5, 103.2, 102.0], ref: null },
+  { label: "Abdominal", valores: [88.0, 86.0, 84.5, 83.0], ref: 88 },
+  { label: "Coxa D",    valores: [59.0, 58.2, 57.5, 57.0], ref: null },
+];
+
+const EVOLUCAO_DOBRAS = [
+  { label: "Σ7 Dobras (mm)", valores: [172, 168, 163, 158] },
+  { label: "% Gordura Siri", valores: [35.2, 34.5, 33.6, 32.8] },
+];
+
+// ─── DADOS ACTUAIS (última avaliação) ────────────────────────────────────────
+
+const INDICES_ATUAIS = [
+  { label: "IMC",             value: "27,6 kg/m²", classif: "Sobrepeso",  cor: "warning" as const, pct: 64 },
+  { label: "RCQ",             value: "0,76",        classif: "Risco Baixo", cor: "success" as const, pct: 38 },
+  { label: "RCE",             value: "0,46",        classif: "Adequado",   cor: "success" as const, pct: 46 },
+  { label: "IAC",             value: "31,8%",       classif: "Obeso I",    cor: "danger" as const,  pct: 72 },
+];
+
+// ─── HELPERS ─────────────────────────────────────────────────────────────────
+
+function delta(valores: number[]) {
+  if (valores.length < 2) return null;
+  const d = valores[valores.length - 1] - valores[0];
+  return { valor: d, pct: ((d / valores[0]) * 100).toFixed(1) };
+}
+
+function TendenciaBadge({ valores }: { valores: number[] }) {
+  const d = delta(valores);
+  if (!d) return null;
+  const cor = d.valor < 0 ? "text-green-600 bg-green-50" : "text-red-600 bg-red-50";
+  const sinal = d.valor < 0 ? "▼" : "▲";
+  return (
+    <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${cor}`}>
+      {sinal} {Math.abs(d.valor).toFixed(1)} ({d.valor < 0 ? "" : "+"}{d.pct}%)
+    </span>
+  );
+}
+
+// Gráfico de linha para um indicador individual
+function MiniLineChart({ item, cor }: { item: typeof EVOLUCAO_INDICES[0]; cor: string }) {
+  const data = AVALIACOES.map((d, i) => ({ data: d, valor: item.valores[i] }));
+  return (
+    <div className="h-28">
+      <ResponsiveContainer width="100%" height="100%">
+        <LineChart data={data} margin={{ top: 4, right: 8, bottom: 0, left: 0 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+          <XAxis dataKey="data" tick={{ fontSize: 9, fill: "#94a3b8" }} />
+          <YAxis tick={{ fontSize: 9, fill: "#94a3b8" }} width={32} domain={["auto", "auto"]} />
+          <Tooltip contentStyle={{ fontSize: 11, borderRadius: 8, border: "1px solid #e2e8f0" }} />
+          {item.meta && (
+            <ReferenceLine y={item.meta} stroke="#94a3b8" strokeDasharray="4 2"
+              label={{ value: "meta", fontSize: 9, fill: "#94a3b8", position: "insideTopRight" }} />
+          )}
+          <Line type="monotone" dataKey="valor" stroke={cor} strokeWidth={2.5}
+            dot={{ r: 3, fill: cor }} activeDot={{ r: 5 }} />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
+
+// Gráfico multi-linha para circunferências
+function CircunferenciasChart() {
+  const data = AVALIACOES.map((d, i) => {
+    const p: Record<string, any> = { data: d };
+    EVOLUCAO_CIRCUNFERENCIAS.forEach((c) => { p[c.label] = c.valores[i]; });
+    return p;
+  });
+  const cores = ["#6366f1", "#f59e0b", "#ef4444", "#10b981"];
+  return (
+    <div className="h-52">
+      <ResponsiveContainer width="100%" height="100%">
+        <LineChart data={data} margin={{ top: 8, right: 16, bottom: 0, left: 0 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+          <XAxis dataKey="data" tick={{ fontSize: 10, fill: "#94a3b8" }} />
+          <YAxis tick={{ fontSize: 10, fill: "#94a3b8" }} width={36} domain={["auto", "auto"]} unit=" cm" />
+          <Tooltip contentStyle={{ fontSize: 11, borderRadius: 8, border: "1px solid #e2e8f0" }} formatter={(v: any) => [`${v} cm`]} />
+          <Legend wrapperStyle={{ fontSize: 10 }} iconType="circle" iconSize={8} />
+          {EVOLUCAO_CIRCUNFERENCIAS.map((c, i) => (
+            <Line key={c.label} type="monotone" dataKey={c.label}
+              stroke={cores[i]} strokeWidth={2} dot={{ r: 3 }} activeDot={{ r: 5 }} />
+          ))}
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
+
+// Gráfico de barras para composição corporal
+function ComposicaoBarChart() {
+  const data = AVALIACOES.map((d, i) => ({
+    data: d,
+    "Massa Gorda": parseFloat((82.0 - [53.1, 52.7, 52.5, 52.4][i]).toFixed(1)),
+    "Massa Magra": [53.1, 52.7, 52.5, 52.4][i],
+  }));
+  return (
+    <div className="h-52">
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart data={data} margin={{ top: 8, right: 16, bottom: 0, left: 0 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+          <XAxis dataKey="data" tick={{ fontSize: 10, fill: "#94a3b8" }} />
+          <YAxis tick={{ fontSize: 10, fill: "#94a3b8" }} width={36} unit=" kg" />
+          <Tooltip contentStyle={{ fontSize: 11, borderRadius: 8, border: "1px solid #e2e8f0" }} formatter={(v: any) => [`${v} kg`]} />
+          <Legend wrapperStyle={{ fontSize: 10 }} iconType="circle" iconSize={8} />
+          <Bar dataKey="Massa Gorda" fill="#ef4444" radius={[3, 3, 0, 0]} />
+          <Bar dataKey="Massa Magra" fill="#10b981" radius={[3, 3, 0, 0]} />
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
+
+// ─── COMPONENTE PRINCIPAL ─────────────────────────────────────────────────────
 
 export function AntropometriaTab() {
   return (
     <div>
-      {/* Dados Gerais */}
-      <ExportSection title="Identificação e Data da Avaliação">
+      {/* Identificação */}
+      <ExportSection title="Identificação e Dados da Avaliação">
         <Card shadow="none" classNames={{ base: "border border-slate-200" }}>
           <CardBody>
             <div className="grid grid-cols-3 gap-x-6 gap-y-3">
@@ -31,15 +183,78 @@ export function AntropometriaTab() {
         </Card>
       </ExportSection>
 
-      {/* Índices Antropométricos */}
-      <ExportSection title="Índices Antropométricos">
+      {/* EVOLUÇÃO — Indicadores principais */}
+      <ExportSection title="Evolução dos Indicadores Principais">
+        <Card shadow="none" classNames={{ base: "border border-slate-100 mb-3" }}>
+          <CardHeader className="pb-0 pt-3 px-4">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+              Comparativo {AVALIACOES[0]} → {AVALIACOES[AVALIACOES.length - 1]}
+            </span>
+          </CardHeader>
+          <CardBody className="pt-2 pb-4">
+            <div className="grid grid-cols-2 gap-4">
+              {EVOLUCAO_INDICES.map((item, i) => {
+                const cores = ["#6366f1", "#f59e0b", "#ef4444", "#10b981"];
+                const atual = item.valores[item.valores.length - 1];
+                return (
+                  <div key={item.label} className="border border-slate-100 rounded-xl p-3">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs font-bold text-slate-600">{item.label}</span>
+                      <TendenciaBadge valores={item.valores} />
+                    </div>
+                    <div className="text-2xl font-extrabold mb-1" style={{ color: cores[i] }}>
+                      {atual.toFixed(1).replace(".", ",")}
+                    </div>
+                    <MiniLineChart item={item} cor={cores[i]} />
+                  </div>
+                );
+              })}
+            </div>
+          </CardBody>
+        </Card>
+
+        {/* Tabela comparativa dos indicadores */}
+        <Card shadow="none" classNames={{ base: "border border-slate-200" }}>
+          <CardBody className="p-0">
+            <table className="w-full text-xs">
+              <thead>
+                <tr className="border-b border-slate-100 bg-slate-50">
+                  <th className="text-left px-4 py-2.5 font-semibold text-slate-500 uppercase tracking-wider">Indicador</th>
+                  {AVALIACOES.map((d, i) => (
+                    <th key={d} className={`text-right px-3 py-2.5 font-semibold uppercase tracking-wider ${i === AVALIACOES.length - 1 ? "text-indigo-600" : "text-slate-400"}`}>
+                      {d}
+                    </th>
+                  ))}
+                  <th className="text-center px-3 py-2.5 font-semibold text-slate-500 uppercase tracking-wider">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                {EVOLUCAO_INDICES.map((item, si) => {
+                  const d = delta(item.valores);
+                  return (
+                    <tr key={si} className={`border-b border-slate-50 ${si % 2 !== 0 ? "bg-slate-50/40" : ""}`}>
+                      <td className="px-4 py-2.5 font-semibold text-slate-700">{item.label}</td>
+                      {item.valores.map((v, vi) => (
+                        <td key={vi} className={`text-right px-3 py-2.5 font-mono ${vi === AVALIACOES.length - 1 ? "font-bold text-slate-900 text-sm" : "text-slate-400"}`}>
+                          {v.toFixed(1).replace(".", ",")}
+                        </td>
+                      ))}
+                      <td className="text-center px-3 py-2.5">
+                        {d && <TendenciaBadge valores={item.valores} />}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </CardBody>
+        </Card>
+      </ExportSection>
+
+      {/* Índices Antropométricos actuais */}
+      <ExportSection title="Índices Antropométricos — Avaliação Atual">
         <div className="grid grid-cols-2 gap-3">
-          {[
-            { label: "IMC", value: "27,6 kg/m²", classif: "Sobrepeso", cor: "warning" as const, pct: 64 },
-            { label: "RCQ (Relação Cintura-Quadril)", value: "0,76", classif: "Risco Baixo", cor: "success" as const, pct: 38 },
-            { label: "RCE (Relação Cintura-Estatura)", value: "0,46", classif: "Adequado", cor: "success" as const, pct: 46 },
-            { label: "IAC (Índice Adiposidade Corporal)", value: "31,8%", classif: "Obeso I", cor: "danger" as const, pct: 72 },
-          ].map((idx) => (
+          {INDICES_ATUAIS.map((idx) => (
             <Card key={idx.label} shadow="none" classNames={{ base: "border border-slate-200" }}>
               <CardBody className="pb-3">
                 <div className="flex justify-between items-start mb-2">
@@ -55,41 +270,38 @@ export function AntropometriaTab() {
       </ExportSection>
 
       {/* Composição Corporal */}
-      <ExportSection title="Composição Corporal">
-        <Card shadow="none" classNames={{ base: "border border-slate-200 mb-4" }}>
+      <ExportSection title="Evolução da Composição Corporal">
+        <Card shadow="none" classNames={{ base: "border border-slate-100 mb-3" }}>
+          <CardHeader className="pb-0 pt-3 px-4">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+              Massa Gorda vs Massa Magra (kg) — {AVALIACOES[0]} a {AVALIACOES[AVALIACOES.length - 1]}
+            </span>
+          </CardHeader>
+          <CardBody className="pt-1 pb-3">
+            <ComposicaoBarChart />
+          </CardBody>
+        </Card>
+
+        <Card shadow="none" classNames={{ base: "border border-slate-200 mb-3" }}>
           <CardBody>
             <div className="grid grid-cols-2 gap-6">
               <div>
-                <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-3">Distribuição Corporal</div>
+                <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-3">Distribuição Atual</div>
                 <div className="space-y-3">
-                  <div>
-                    <div className="flex justify-between text-xs mb-1">
-                      <span className="font-semibold text-slate-700">Massa Gorda</span>
-                      <span className="text-slate-600">25,6 kg · 32,8%</span>
+                  {[
+                    { label: "Massa Gorda", val: "25,6 kg · 32,8%", pct: 32.8, max: 60, cor: "danger" as const },
+                    { label: "Massa Magra", val: "52,4 kg · 67,2%", pct: 67.2, max: 100, cor: "success" as const },
+                    { label: "Massa Muscular", val: "28,1 kg · 36%", pct: 36, max: 60, cor: "primary" as const },
+                    { label: "Massa Óssea", val: "2,8 kg · 3,6%", pct: 3.6, max: 6, cor: "secondary" as const },
+                  ].map((item) => (
+                    <div key={item.label}>
+                      <div className="flex justify-between text-xs mb-1">
+                        <span className="font-semibold text-slate-700">{item.label}</span>
+                        <span className="text-slate-600">{item.val}</span>
+                      </div>
+                      <Progress size="sm" value={item.pct} maxValue={item.max} color={item.cor} />
                     </div>
-                    <Progress size="sm" value={32.8} maxValue={60} color="danger" />
-                  </div>
-                  <div>
-                    <div className="flex justify-between text-xs mb-1">
-                      <span className="font-semibold text-slate-700">Massa Magra</span>
-                      <span className="text-slate-600">52,4 kg · 67,2%</span>
-                    </div>
-                    <Progress size="sm" value={67.2} maxValue={100} color="success" />
-                  </div>
-                  <div>
-                    <div className="flex justify-between text-xs mb-1">
-                      <span className="font-semibold text-slate-700">Massa Muscular Esq.</span>
-                      <span className="text-slate-600">28,1 kg · 36%</span>
-                    </div>
-                    <Progress size="sm" value={36} maxValue={60} color="primary" />
-                  </div>
-                  <div>
-                    <div className="flex justify-between text-xs mb-1">
-                      <span className="font-semibold text-slate-700">Massa Óssea (est.)</span>
-                      <span className="text-slate-600">2,8 kg · 3,6%</span>
-                    </div>
-                    <Progress size="sm" value={3.6} maxValue={6} color="secondary" />
-                  </div>
+                  ))}
                 </div>
               </div>
               <div>
@@ -99,9 +311,9 @@ export function AntropometriaTab() {
                     { label: "Somatório de 7 Dobras", value: "158 mm" },
                     { label: "Densidade Corporal", value: "1,0495 g/ml" },
                     { label: "% Gordura (Siri)", value: "32,8%" },
-                    { label: "Classificação (ACSM)", value: "Obeso — Feminino/32 anos" },
+                    { label: "Classificação (ACSM)", value: "Obeso — Fem/32a" },
                     { label: "% Gordura Desejado", value: "22–26%" },
-                    { label: "Peso Gordo a Perder", value: "5,4–8,4 kg" },
+                    { label: "Gordura a Perder", value: "5,4–8,4 kg" },
                   ].map(({ label, value }) => (
                     <div key={label} className="flex justify-between text-xs">
                       <span className="text-slate-500">{label}</span>
@@ -115,85 +327,139 @@ export function AntropometriaTab() {
         </Card>
       </ExportSection>
 
-      {/* Circunferências */}
-      <ExportSection title="Circunferências">
-        <Table removeWrapper aria-label="Circunferências" isStriped>
-          <TableHeader>
-            <TableColumn className="text-xs font-medium uppercase tracking-wider">Medida</TableColumn>
-            <TableColumn className="text-right text-xs font-medium uppercase tracking-wider">Valor (cm)</TableColumn>
-            <TableColumn className="text-right text-xs font-medium uppercase tracking-wider">Referência</TableColumn>
-            <TableColumn className="text-xs font-medium uppercase tracking-wider">Status</TableColumn>
-          </TableHeader>
-          <TableBody items={[
-            { key: "cervical", nome: "Cervical", valor: "36,5", ref: "< 38 cm" },
-            { key: "torax", nome: "Tórax (Peitoral)", valor: "96,0", ref: "proporcional" },
-            { key: "cintura", nome: "Cintura (menor circunferência)", valor: "78,5", ref: "< 80 cm" },
-            { key: "abdominal", nome: "Abdominal (cicatriz umbilical)", valor: "83,0", ref: "< 88 cm" },
-            { key: "quadril", nome: "Quadril (maior proeminência)", valor: "102,0", ref: "proporcional" },
-            { key: "coxa-d", nome: "Coxa Direita (proximal)", valor: "57,0", ref: "proporcional" },
-            { key: "coxa-e", nome: "Coxa Esquerda (proximal)", valor: "56,5", ref: "proporcional" },
-            { key: "pant-d", nome: "Panturrilha Direita", valor: "37,0", ref: "proporcional" },
-            { key: "pant-e", nome: "Panturrilha Esquerda", valor: "36,5", ref: "proporcional" },
-            { key: "braco-d-rel", nome: "Braço Direito Relaxado", valor: "30,0", ref: "proporcional" },
-            { key: "braco-d-cont", nome: "Braço Direito Contraído", valor: "32,5", ref: "proporcional" },
-            { key: "antebraco-d", nome: "Antebraço Direito", valor: "24,0", ref: "proporcional" },
-          ]}>
-            {(c) => (
-              <TableRow key={c.key}>
-                <TableCell className="font-medium text-slate-700">{c.nome}</TableCell>
-                <TableCell className="text-right font-bold text-slate-900">{c.valor}</TableCell>
-                <TableCell className="text-right text-xs text-slate-500">{c.ref}</TableCell>
-                <TableCell>
-                  <Chip size="sm" variant="flat" color="success">Normal</Chip>
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+      {/* Circunferências com evolução */}
+      <ExportSection title="Evolução das Circunferências">
+        <Card shadow="none" classNames={{ base: "border border-slate-100 mb-3" }}>
+          <CardHeader className="pb-0 pt-3 px-4">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+              Principais circunferências (cm)
+            </span>
+          </CardHeader>
+          <CardBody className="pt-1 pb-3">
+            <CircunferenciasChart />
+          </CardBody>
+        </Card>
+
+        <Card shadow="none" classNames={{ base: "border border-slate-200" }}>
+          <CardBody className="p-0">
+            <table className="w-full text-xs">
+              <thead>
+                <tr className="border-b border-slate-100 bg-slate-50">
+                  <th className="text-left px-4 py-2.5 font-semibold text-slate-500 uppercase tracking-wider">Medida</th>
+                  {AVALIACOES.map((d, i) => (
+                    <th key={d} className={`text-right px-3 py-2.5 font-semibold uppercase tracking-wider ${i === AVALIACOES.length - 1 ? "text-indigo-600" : "text-slate-400"}`}>
+                      {d}
+                    </th>
+                  ))}
+                  <th className="text-center px-3 py-2.5 font-semibold text-slate-500 uppercase tracking-wider">Var.</th>
+                  <th className="text-center px-3 py-2.5 font-semibold text-slate-500 uppercase tracking-wider">Ref.</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { nome: "Cervical",         valores: [37.5, 37.2, 36.8, 36.5], ref: "< 38 cm" },
+                  { nome: "Cintura",          valores: [82.0, 80.5, 79.5, 78.5], ref: "< 80 cm" },
+                  { nome: "Abdominal",        valores: [88.0, 86.0, 84.5, 83.0], ref: "< 88 cm" },
+                  { nome: "Quadril",          valores: [106.0, 104.5, 103.2, 102.0], ref: "proporcional" },
+                  { nome: "Coxa D (proximal)",valores: [59.0, 58.2, 57.5, 57.0], ref: "proporcional" },
+                  { nome: "Panturrilha D",    valores: [37.8, 37.5, 37.2, 37.0], ref: "proporcional" },
+                  { nome: "Braço D (relaxado)", valores: [31.0, 30.5, 30.2, 30.0], ref: "proporcional" },
+                  { nome: "Braço D (contraído)", valores: [33.2, 33.0, 32.7, 32.5], ref: "proporcional" },
+                ].map((circ, si) => {
+                  const d = delta(circ.valores);
+                  const negBom = circ.nome.includes("Cintura") || circ.nome.includes("Abdominal") || circ.nome.includes("Quadril") || circ.nome.includes("Cervical");
+                  const cor = d ? (d.valor < 0 ? (negBom ? "text-green-600" : "text-red-600") : (negBom ? "text-red-600" : "text-green-600")) : "text-slate-400";
+                  return (
+                    <tr key={si} className={`border-b border-slate-50 ${si % 2 !== 0 ? "bg-slate-50/40" : ""}`}>
+                      <td className="px-4 py-2.5 font-medium text-slate-700">{circ.nome}</td>
+                      {circ.valores.map((v, vi) => (
+                        <td key={vi} className={`text-right px-3 py-2.5 font-mono ${vi === AVALIACOES.length - 1 ? "font-bold text-slate-900 text-sm" : "text-slate-400"}`}>
+                          {v.toFixed(1).replace(".", ",")}
+                        </td>
+                      ))}
+                      <td className={`text-center px-3 py-2.5 font-bold text-sm ${cor}`}>
+                        {d ? `${d.valor < 0 ? "▼" : "▲"} ${Math.abs(d.valor).toFixed(1)}` : "—"}
+                      </td>
+                      <td className="text-center px-3 py-2.5 text-slate-400 text-[10px]">{circ.ref}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </CardBody>
+        </Card>
       </ExportSection>
 
       {/* Dobras Cutâneas */}
-      <ExportSection title="Dobras Cutâneas (mm)">
-        <Table removeWrapper aria-label="Dobras cutâneas">
-          <TableHeader>
-            <TableColumn className="text-xs font-medium uppercase tracking-wider">Dobra</TableColumn>
-            <TableColumn className="text-right text-xs font-medium uppercase tracking-wider">Med. 1</TableColumn>
-            <TableColumn className="text-right text-xs font-medium uppercase tracking-wider">Med. 2</TableColumn>
-            <TableColumn className="text-right text-xs font-medium uppercase tracking-wider">Med. 3</TableColumn>
-            <TableColumn className="text-right text-xs font-medium uppercase tracking-wider">Média</TableColumn>
-          </TableHeader>
-          <TableBody items={[
-            { key: "peitoral", nome: "Peitoral", m1: "22", m2: "23", m3: "22", media: "22.3", isTotal: false },
-            { key: "axilar", nome: "Axilar Média", m1: "18", m2: "19", m3: "18", media: "18.3", isTotal: false },
-            { key: "triceps", nome: "Tríceps", m1: "28", m2: "27", m3: "28", media: "27.7", isTotal: false },
-            { key: "subescapular", nome: "Subescapular", m1: "24", m2: "24", m3: "25", media: "24.3", isTotal: false },
-            { key: "abdominal", nome: "Abdominal", m1: "30", m2: "31", m3: "30", media: "30.3", isTotal: false },
-            { key: "suprailiaca", nome: "Suprailíaca", m1: "20", m2: "21", m3: "20", media: "20.3", isTotal: false },
-            { key: "coxa", nome: "Coxa", m1: "15", m2: "15", m3: "16", media: "15.3", isTotal: false },
-            { key: "total", nome: "Somatório (Σ7)", m1: "", m2: "", m3: "", media: "158,5 mm", isTotal: true },
-          ]}>
-            {(d) => (
-              <TableRow key={d.key} className={d.isTotal ? "bg-slate-50" : ""}>
-                <TableCell className={d.isTotal ? "font-bold text-slate-900" : "font-medium text-slate-700"}>{d.nome}</TableCell>
-                <TableCell className="text-right text-slate-600">{d.m1}</TableCell>
-                <TableCell className="text-right text-slate-600">{d.m2}</TableCell>
-                <TableCell className="text-right text-slate-600">{d.m3}</TableCell>
-                <TableCell className={`text-right ${d.isTotal ? "font-extrabold text-slate-900" : "font-bold text-slate-900"}`}>{d.media}</TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+      <ExportSection title="Dobras Cutâneas — Evolução">
+        <Card shadow="none" classNames={{ base: "border border-slate-200 mb-3" }}>
+          <CardBody className="p-0">
+            <table className="w-full text-xs">
+              <thead>
+                <tr className="border-b border-slate-100 bg-slate-50">
+                  <th className="text-left px-4 py-2.5 font-semibold text-slate-500 uppercase tracking-wider">Dobra</th>
+                  <th className="text-right px-3 py-2.5 font-semibold text-slate-400 uppercase tracking-wider">Jun/25</th>
+                  <th className="text-right px-3 py-2.5 font-semibold text-slate-400 uppercase tracking-wider">Set/25</th>
+                  <th className="text-right px-3 py-2.5 font-semibold text-slate-400 uppercase tracking-wider">Dez/25</th>
+                  <th className="text-right px-3 py-2.5 font-semibold text-indigo-600 uppercase tracking-wider">Mar/26</th>
+                  <th className="text-right px-3 py-2.5 font-semibold text-slate-500 uppercase tracking-wider">Med. 1</th>
+                  <th className="text-right px-3 py-2.5 font-semibold text-slate-500 uppercase tracking-wider">Med. 2</th>
+                  <th className="text-right px-3 py-2.5 font-semibold text-slate-500 uppercase tracking-wider">Med. 3</th>
+                  <th className="text-center px-3 py-2.5 font-semibold text-slate-500 uppercase tracking-wider">Var.</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { nome: "Peitoral",     hist: [26, 24, 23, 22.3], m1: "22", m2: "23", m3: "22" },
+                  { nome: "Axilar Média", hist: [21, 20, 19, 18.3], m1: "18", m2: "19", m3: "18" },
+                  { nome: "Tríceps",      hist: [31, 30, 29, 27.7], m1: "28", m2: "27", m3: "28" },
+                  { nome: "Subescapular", hist: [27, 26, 25, 24.3], m1: "24", m2: "24", m3: "25" },
+                  { nome: "Abdominal",    hist: [34, 33, 32, 30.3], m1: "30", m2: "31", m3: "30" },
+                  { nome: "Suprailíaca",  hist: [23, 22, 21, 20.3], m1: "20", m2: "21", m3: "20" },
+                  { nome: "Coxa",         hist: [18, 17, 16, 15.3], m1: "15", m2: "15", m3: "16" },
+                ].map((d, si) => {
+                  const vd = delta(d.hist);
+                  return (
+                    <tr key={si} className={`border-b border-slate-50 ${si % 2 !== 0 ? "bg-slate-50/40" : ""}`}>
+                      <td className="px-4 py-2.5 font-medium text-slate-700">{d.nome}</td>
+                      {d.hist.map((v, vi) => (
+                        <td key={vi} className={`text-right px-3 py-2.5 font-mono ${vi === 3 ? "font-bold text-slate-900 text-sm" : "text-slate-400"}`}>
+                          {v.toFixed(1).replace(".", ",")}
+                        </td>
+                      ))}
+                      <td className="text-right px-3 py-2.5 text-slate-400">{d.m1}</td>
+                      <td className="text-right px-3 py-2.5 text-slate-400">{d.m2}</td>
+                      <td className="text-right px-3 py-2.5 text-slate-400">{d.m3}</td>
+                      <td className={`text-center px-3 py-2.5 font-bold text-sm ${vd && vd.valor < 0 ? "text-green-600" : "text-red-600"}`}>
+                        {vd ? `${vd.valor < 0 ? "▼" : "▲"} ${Math.abs(vd.valor).toFixed(1)}` : "—"}
+                      </td>
+                    </tr>
+                  );
+                })}
+                <tr className="bg-slate-100 border-t-2 border-slate-300">
+                  <td className="px-4 py-2.5 font-bold text-slate-900">Σ7 Dobras</td>
+                  {[172, 168, 163, 158].map((v, vi) => (
+                    <td key={vi} className={`text-right px-3 py-2.5 font-mono font-extrabold ${vi === 3 ? "text-indigo-700 text-sm" : "text-slate-500"}`}>
+                      {v} mm
+                    </td>
+                  ))}
+                  <td colSpan={3} />
+                  <td className="text-center px-3 py-2.5 font-extrabold text-green-600">▼ 14 mm</td>
+                </tr>
+              </tbody>
+            </table>
+          </CardBody>
+        </Card>
       </ExportSection>
 
       {/* Observações */}
       <ExportSection title="Observações Clínicas">
         <Card shadow="none" classNames={{ base: "border border-slate-200" }}>
           <CardBody className="text-xs text-slate-600 leading-relaxed space-y-2">
-            <p>Avaliação realizada no período da manhã (08h30), em jejum de 12 horas, com bexiga vazia. Paciente descansada, sem exercício físico nas 24h anteriores. Condições padronizadas de acordo com protocolo da clínica.</p>
-            <p>A distribuição de gordura corporal predominantemente ginóide (quadril e coxas) representa menor risco cardiovascular em comparação à distribuição androide. RCQ de 0,76 está dentro do limite aceitável para o sexo feminino (risco baixo {"< 0,80"}).</p>
-            <p>Massa magra bem preservada (52,4 kg) para o nível de atividade física atual, especialmente considerando o histórico sedentário dos últimos 3 anos. Dois meses de musculação já apresentam impacto positivo na manutenção muscular.</p>
-            <p>Recomenda-se nova avaliação em 30 dias para acompanhamento do impacto da musculação na composição corporal. Atenção especial ao risco de perda de massa muscular caso o déficit calórico seja muito agressivo.</p>
-            <p><strong>Metas de composição corporal:</strong> Reduzir % de gordura para 24–26% (perda de ~5–7 kg de massa gorda) mantendo massa muscular atual. Não focar apenas na balança — a evolução da composição corporal é o indicador primário de sucesso.</p>
+            <p>Avaliação realizada no período da manhã (08h30), em jejum de 12 horas, com bexiga vazia. Paciente descansada, sem exercício físico nas 24h anteriores.</p>
+            <p>A evolução de 9 meses mostra redução consistente do peso (-4,0 kg), % de gordura (-2,4 pp) e circunferências, com preservação da massa magra (52,4 kg), evidenciando boa resposta ao protocolo dietoterápico e musculação.</p>
+            <p>Redução do somatório de dobras de 172 → 158 mm (-14 mm) reforça a perda de gordura localizada, especialmente abdominal e tricipital.</p>
+            <p><strong>Meta:</strong> Atingir 22–26% de gordura corporal com peso entre 68–70 kg, preservando massa magra acima de 50 kg. Projeção: 6–9 meses com protocolo atual.</p>
           </CardBody>
         </Card>
       </ExportSection>
