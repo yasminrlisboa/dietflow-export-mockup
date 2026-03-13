@@ -149,6 +149,26 @@ export function PrescricaoManipuladosTab() {
         </ExportSection>
       ))}
 
+      {/* Texto Livre */}
+      <ExportSection title="Orientações Gerais">
+        <Card shadow="none" classNames={{ base: "border border-slate-200" }}>
+          <CardBody className="text-xs text-slate-700 leading-relaxed space-y-3">
+            <p>
+              As fórmulas magistrais prescritas foram selecionadas com base na avaliação clínica individualizada, histórico laboratorial e objetivos terapêuticos da paciente. O uso de manipulados permite o ajuste preciso de doses e a combinação sinérgica de ativos não disponíveis em formulações industriais.
+            </p>
+            <p>
+              <strong>Importante:</strong> Informar ao farmacêutico manipulador sobre todos os medicamentos em uso antes de avisar a fórmula. O anticoncepcional oral combinado (Levonorgestrel + Etinilestradiol) pode interagir com alguns dos ativos prescritos — monitorar resposta clínica nas primeiras 4 semanas.
+            </p>
+            <p>
+              As fórmulas devem ser armazenadas em local fresco, seco e ao abrigo da luz. Não refrigerar, salvo indicação específica do farmacêutico. Em caso de alteração de cor, odor ou textura, suspender o uso e entrar em contato com o consultório.
+            </p>
+            <p>
+              Retorno agendado em <strong>60 dias</strong> para reavaliação clínica e ajuste de doses conforme resposta terapêutica e novos exames laboratoriais.
+            </p>
+          </CardBody>
+        </Card>
+      </ExportSection>
+
       <ExportAssinatura />
     </div>
   );

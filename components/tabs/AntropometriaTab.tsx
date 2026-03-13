@@ -327,6 +327,60 @@ export function AntropometriaTab() {
         </Card>
       </ExportSection>
 
+      {/* Comparativo de Fórmulas */}
+      <ExportSection title="Comparativo de Fórmulas — Composição Corporal">
+        <Card shadow="none" classNames={{ base: "border border-slate-200" }}>
+          <CardBody className="p-0">
+            <table className="w-full text-xs">
+              <thead>
+                <tr className="border-b border-slate-100 bg-slate-50">
+                  <th className="text-left px-4 py-2.5 font-semibold text-slate-500 uppercase tracking-wider">Fórmula / Método</th>
+                  <th className="text-right px-3 py-2.5 font-semibold text-slate-500 uppercase tracking-wider">% Gordura</th>
+                  <th className="text-right px-3 py-2.5 font-semibold text-slate-500 uppercase tracking-wider">Massa Gorda</th>
+                  <th className="text-right px-3 py-2.5 font-semibold text-slate-500 uppercase tracking-wider">Massa Magra</th>
+                  <th className="text-center px-3 py-2.5 font-semibold text-slate-500 uppercase tracking-wider">Classificação</th>
+                  <th className="text-center px-3 py-2.5 font-semibold text-slate-500 uppercase tracking-wider">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { formula: "Pollock 7 dobras",        pctG: 32.8, mG: 25.6, mM: 52.4, classif: "Obeso I",   oficial: true  },
+                  { formula: "Pollock 3 dobras",         pctG: 33.4, mG: 26.1, mM: 51.9, classif: "Obeso I",   oficial: false },
+                  { formula: "Durnin-Womersley",         pctG: 34.1, mG: 26.6, mM: 51.4, classif: "Obeso I",   oficial: false },
+                  { formula: "Petroski",                 pctG: 31.9, mG: 24.9, mM: 53.1, classif: "Sobrepeso", oficial: false },
+                  { formula: "Guedes",                   pctG: 33.0, mG: 25.7, mM: 52.3, classif: "Obeso I",   oficial: false },
+                  { formula: "Bioimpedância (BIA)",      pctG: 32.8, mG: 25.6, mM: 52.4, classif: "Obeso I",   oficial: false },
+                ].map((f, i) => (
+                  <tr key={i} className={`border-b border-slate-50 ${f.oficial ? "bg-indigo-50/50" : i % 2 !== 0 ? "bg-slate-50/40" : ""}`}>
+                    <td className="px-4 py-2.5 font-medium text-slate-700">
+                      {f.formula}
+                    </td>
+                    <td className={`text-right px-3 py-2.5 font-mono font-bold ${f.oficial ? "text-indigo-700" : "text-slate-700"}`}>
+                      {f.pctG.toFixed(1)}%
+                    </td>
+                    <td className="text-right px-3 py-2.5 font-mono text-slate-600">
+                      {f.mG.toFixed(1)} kg
+                    </td>
+                    <td className="text-right px-3 py-2.5 font-mono text-slate-600">
+                      {f.mM.toFixed(1)} kg
+                    </td>
+                    <td className="text-center px-3 py-2.5 text-slate-500">{f.classif}</td>
+                    <td className="text-center px-3 py-2.5">
+                      {f.oficial
+                        ? <Chip size="sm" variant="flat" color="primary">★ Oficial</Chip>
+                        : <span className="text-slate-300 text-xs">—</span>}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </CardBody>
+        </Card>
+        <p className="text-[10px] text-slate-400 italic mt-2 px-1">
+          Resultado oficial selecionado: Pollock 7 dobras. Variação entre métodos: 31,9–34,1% de gordura. Todas as fórmulas convergem para classificação de excesso de gordura corporal.
+        </p>
+      </ExportSection>
+
       {/* Circunferências com evolução */}
       <ExportSection title="Evolução das Circunferências">
         <Card shadow="none" classNames={{ base: "border border-slate-100 mb-3" }}>
@@ -417,13 +471,16 @@ export function AntropometriaTab() {
               </thead>
               <tbody>
                 {[
-                  { nome: "Peitoral",     hist: [26, 24, 23, 22.3], m1: "22", m2: "23", m3: "22" },
-                  { nome: "Axilar Média", hist: [21, 20, 19, 18.3], m1: "18", m2: "19", m3: "18" },
-                  { nome: "Tríceps",      hist: [31, 30, 29, 27.7], m1: "28", m2: "27", m3: "28" },
-                  { nome: "Subescapular", hist: [27, 26, 25, 24.3], m1: "24", m2: "24", m3: "25" },
-                  { nome: "Abdominal",    hist: [34, 33, 32, 30.3], m1: "30", m2: "31", m3: "30" },
-                  { nome: "Suprailíaca",  hist: [23, 22, 21, 20.3], m1: "20", m2: "21", m3: "20" },
-                  { nome: "Coxa",         hist: [18, 17, 16, 15.3], m1: "15", m2: "15", m3: "16" },
+                  { nome: "Peitoral / Torácica", hist: [26, 24, 23, 22.3], m1: "22", m2: "23", m3: "22" },
+                  { nome: "Axilar Média",         hist: [21, 20, 19, 18.3], m1: "18", m2: "19", m3: "18" },
+                  { nome: "Tríceps",              hist: [31, 30, 29, 27.7], m1: "28", m2: "27", m3: "28" },
+                  { nome: "Bíceps",               hist: [14, 13, 12, 11.7], m1: "12", m2: "11", m3: "12" },
+                  { nome: "Subescapular",          hist: [27, 26, 25, 24.3], m1: "24", m2: "24", m3: "25" },
+                  { nome: "Suprailíaca",           hist: [23, 22, 21, 20.3], m1: "20", m2: "21", m3: "20" },
+                  { nome: "Supraesp inhal",        hist: [20, 19, 18, 17.3], m1: "17", m2: "17", m3: "18" },
+                  { nome: "Abdominal",             hist: [34, 33, 32, 30.3], m1: "30", m2: "31", m3: "30" },
+                  { nome: "Coxa",                  hist: [18, 17, 16, 15.3], m1: "15", m2: "15", m3: "16" },
+                  { nome: "Panturrilha",           hist: [15, 14, 13, 12.7], m1: "13", m2: "13", m3: "12" },
                 ].map((d, si) => {
                   const vd = delta(d.hist);
                   return (
@@ -444,7 +501,7 @@ export function AntropometriaTab() {
                   );
                 })}
                 <tr className="bg-slate-100 border-t-2 border-slate-300">
-                  <td className="px-4 py-2.5 font-bold text-slate-900">Σ7 Dobras</td>
+                  <td className="px-4 py-2.5 font-bold text-slate-900">Σ7 Dobras (Pollock)</td>
                   {[172, 168, 163, 158].map((v, vi) => (
                     <td key={vi} className={`text-right px-3 py-2.5 font-mono font-extrabold ${vi === 3 ? "text-indigo-700 text-sm" : "text-slate-500"}`}>
                       {v} mm
@@ -452,6 +509,16 @@ export function AntropometriaTab() {
                   ))}
                   <td colSpan={3} />
                   <td className="text-center px-3 py-2.5 font-extrabold text-green-600">▼ 14 mm</td>
+                </tr>
+                <tr className="bg-slate-50 border-t border-slate-200">
+                  <td className="px-4 py-2.5 font-bold text-slate-900">Σ10 Dobras (Petroski)</td>
+                  {[228, 222, 215, 209].map((v, vi) => (
+                    <td key={vi} className={`text-right px-3 py-2.5 font-mono font-extrabold ${vi === 3 ? "text-indigo-700 text-sm" : "text-slate-500"}`}>
+                      {v} mm
+                    </td>
+                  ))}
+                  <td colSpan={3} />
+                  <td className="text-center px-3 py-2.5 font-extrabold text-green-600">▼ 19 mm</td>
                 </tr>
               </tbody>
             </table>
@@ -529,8 +596,12 @@ export function AntropometriaTab() {
               <tbody>
                 {[
                   { nome: "Massa Magra (kg)",            valor: "52,4 kg", ref: "49–60 kg",       ok: true  },
+                  { nome: "Massa Livre de Gordura (kg)",  valor: "52,4 kg", ref: "49–60 kg",       ok: true  },
                   { nome: "Massa Gorda (kg)",             valor: "25,6 kg", ref: "< 24 kg",        ok: false },
                   { nome: "% Gordura Corporal",           valor: "32,8%",   ref: "20–30%",         ok: false },
+                  { nome: "Gordura Visceral (nível)",     valor: "8",       ref: "1–9 (normal)",   ok: true  },
+                  { nome: "Peso Ósseo (kg)",              valor: "2,8 kg",  ref: "2,5–3,5 kg",     ok: true  },
+                  { nome: "Idade Metabólica (anos)",      valor: "36 anos", ref: "—",              ok: true  },
                   { nome: "Água Corporal Total (L)",      valor: "33,8 L",  ref: "31,5–39,5 L",    ok: true  },
                   { nome: "Água Intracelular (L)",        valor: "20,1 L",  ref: "18,5–24,0 L",    ok: true  },
                   { nome: "Água Extracelular (L)",        valor: "13,7 L",  ref: "12,5–16,5 L",    ok: true  },
