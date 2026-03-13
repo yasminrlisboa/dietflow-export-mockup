@@ -1,4 +1,5 @@
 "use client";
+import { Card, CardBody, CardHeader, Chip } from "@heroui/react";
 import { ExportSection } from "../ExportSection";
 
 interface Alimento {
@@ -16,25 +17,25 @@ interface Refeicao {
 
 interface Cenario {
   nome: string;
-  dias: string;
+  dias: string[];
   refeicoes: Refeicao[];
 }
 
 const CENARIOS: Cenario[] = [
   {
     nome: "Cenário 1 — Segunda a Sexta",
-    dias: "Segunda · Terça · Quarta · Quinta · Sexta",
+    dias: ["Seg", "Ter", "Qua", "Qui", "Sex"],
     refeicoes: [
       {
         nome: "Café da Manhã", emoji: "☀️", horario: "07:00",
         alimentos: [
-          { nome: "Aveia em flocos",                            quantidade: "4 colheres de sopa" },
-          { nome: "Banana prata",                               quantidade: "1 unidade média" },
-          { nome: "Leite integral",                             quantidade: "1 copo americano (200ml)" },
-          { nome: "Mel",                                        quantidade: "1 colher de sobremesa" },
-          { nome: "Ovo cozido",                                 quantidade: "2 unidades" },
-          { nome: "Pasta de amendoim integral (sem açúcar)",    quantidade: "1 colher de sobremesa" },
-          { nome: "Mamão formosa picado",                       quantidade: "2 fatias médias" },
+          { nome: "Aveia em flocos",                           quantidade: "4 colheres de sopa" },
+          { nome: "Banana prata",                              quantidade: "1 unidade média" },
+          { nome: "Leite integral",                            quantidade: "1 copo (200ml)" },
+          { nome: "Mel",                                       quantidade: "1 colher de sobremesa" },
+          { nome: "Ovo cozido",                                quantidade: "2 unidades" },
+          { nome: "Pasta de amendoim integral (sem açúcar)",   quantidade: "1 colher de sobremesa" },
+          { nome: "Mamão formosa picado",                      quantidade: "2 fatias médias" },
         ],
         obs: "Pode substituir a banana por maçã ou pera. A pasta de amendoim pode ser trocada por pasta de castanha-de-caju.",
       },
@@ -73,17 +74,17 @@ const CENARIOS: Cenario[] = [
   },
   {
     nome: "Cenário 2 — Fim de Semana",
-    dias: "Sábado · Domingo",
+    dias: ["Sáb", "Dom"],
     refeicoes: [
       {
         nome: "Café da Manhã", emoji: "☀️", horario: "09:00",
         alimentos: [
-          { nome: "Tapioca média com queijo cottage light",     quantidade: "1 tapioca média" },
+          { nome: "Tapioca com queijo cottage light",           quantidade: "1 tapioca média" },
           { nome: "Ovo mexido com tomate e cebola roxa",        quantidade: "2 ovos + legumes" },
-          { nome: "Suco de laranja natural (sem açúcar)",       quantidade: "1 copo americano (200ml)" },
-          { nome: "Café com leite desnatado",                   quantidade: "1 xícara de chá (150ml)" },
+          { nome: "Suco de laranja natural (sem açúcar)",       quantidade: "1 copo (200ml)" },
+          { nome: "Café com leite desnatado",                   quantidade: "1 xícara (150ml)" },
         ],
-        obs: "Café da manhã mais tranquilo e relaxado para o final de semana.",
+        obs: "Café da manhã mais tranquilo e relaxado para o fim de semana.",
       },
       {
         nome: "Almoço em Família", emoji: "🍽️", horario: "13:00",
@@ -95,7 +96,7 @@ const CENARIOS: Cenario[] = [
           { nome: "Vinagrete (tomate, cebola, pimentão)",      quantidade: "3 colheres de sopa" },
           { nome: "Couve refogada com bacon de peru",          quantidade: "3 colheres de sopa" },
         ],
-        obs: "No almoço de fim de semana, é permitida uma porção moderada de sobremesa (fruta fresca ou sorvete, máx. 60g).",
+        obs: "É permitida uma porção moderada de sobremesa no almoço (fruta fresca ou sorvete, máx. 60g).",
       },
       {
         nome: "Lanche da Tarde", emoji: "☕", horario: "16:00",
@@ -116,18 +117,18 @@ const CENARIOS: Cenario[] = [
   },
   {
     nome: "Cenário 3 — Dia de Treino Intenso",
-    dias: "Segunda · Quarta · Sexta (dias de musculação)",
+    dias: ["Seg", "Qua", "Sex"],
     refeicoes: [
       {
         nome: "Café da Manhã", emoji: "☀️", horario: "06:30",
         alimentos: [
           { nome: "Panqueca de aveia, banana e ovo (sem farinha)", quantidade: "2 panquecas" },
           { nome: "Mel puro para cobertura",                   quantidade: "1 colher de sopa rasa" },
-          { nome: "Café preto com canela (sem açúcar)",        quantidade: "1 copo americano (200ml)" },
+          { nome: "Café preto com canela (sem açúcar)",        quantidade: "1 copo (200ml)" },
         ],
       },
       {
-        nome: "Pré-treino (1h antes do treino)", emoji: "⚡", horario: "09:00",
+        nome: "Pré-treino (1h antes)", emoji: "⚡", horario: "09:00",
         alimentos: [
           { nome: "Banana prata bem madura",                   quantidade: "2 bananas médias" },
           { nome: "Whey Protein Isolado (baunilha)",           quantidade: "1 scoop (30g)" },
@@ -177,37 +178,56 @@ export function PlanoAlimentarTab() {
     <div>
       {CENARIOS.map((cenario, ci) => (
         <ExportSection key={ci} title={cenario.nome}>
-          {/* Dias da semana */}
-          <p className="text-xs text-slate-400 mb-4">{cenario.dias}</p>
 
+          {/* Header verde do cenário — dias */}
+          <Card shadow="none" classNames={{ base: "mb-4 overflow-hidden" }} style={{ border: "1px solid #c6f0df" }}>
+            <CardHeader
+              className="py-3 px-4"
+              style={{ background: "linear-gradient(135deg, var(--green-light), #f0fdf8)" }}
+            >
+              <div className="flex gap-1.5 flex-wrap">
+                {cenario.dias.map(d => (
+                  <Chip key={d} size="sm" variant="solid" classNames={{ base: "bg-emerald-500 text-white font-semibold" }}>{d}</Chip>
+                ))}
+              </div>
+            </CardHeader>
+          </Card>
+
+          {/* Refeições */}
           <div className="space-y-3">
             {cenario.refeicoes.map((ref, ri) => (
-              <div key={ri} className="border border-slate-200 rounded-xl overflow-hidden">
+              <Card key={ri} shadow="none" classNames={{ base: "overflow-hidden border border-slate-100" }}>
+
                 {/* Cabeçalho da refeição */}
-                <div className="flex items-center gap-3 px-4 py-2.5 bg-slate-50">
-                  <span className="text-sm font-bold text-slate-900">{ref.horario}</span>
+                <CardHeader className="py-2.5 px-4" style={{ background: "#f8fafc", borderBottom: "1px solid #f1f5f9" }}>
+                  <span className="text-sm font-bold text-slate-900 mr-3">{ref.horario}</span>
                   <span className="text-sm font-semibold text-slate-800">{ref.emoji} {ref.nome}</span>
-                </div>
+                </CardHeader>
 
-                {/* Lista de alimentos */}
-                <div className="px-4 py-3 space-y-2">
-                  {ref.alimentos.map((al, ai) => (
-                    <div key={ai} className="flex items-baseline justify-between gap-4">
-                      <span className="text-sm text-slate-700">{al.nome}</span>
-                      <span className="text-sm font-semibold text-slate-900 text-right flex-shrink-0">{al.quantidade}</span>
-                    </div>
-                  ))}
-                </div>
+                <CardBody className="px-4 py-3">
+                  <div className="space-y-2">
+                    {ref.alimentos.map((al, ai) => (
+                      <div key={ai} className="flex items-baseline justify-between gap-4">
+                        <span className="text-sm text-slate-700">{al.nome}</span>
+                        <span className="text-sm font-semibold text-slate-900 flex-shrink-0">{al.quantidade}</span>
+                      </div>
+                    ))}
+                  </div>
+                </CardBody>
 
-                {/* Observação */}
                 {ref.obs && (
-                  <div className="border-t border-slate-100 px-4 py-2.5 bg-slate-50/60">
-                    <p className="text-xs text-slate-500 leading-relaxed italic">{ref.obs}</p>
+                  <div
+                    className="px-4 py-2.5 text-xs leading-relaxed"
+                    style={{ color: "var(--green-dark)", background: "var(--green-light)", borderTop: "1px solid #c6f0df" }}
+                  >
+                    💡 {ref.obs}
                   </div>
                 )}
-              </div>
+
+              </Card>
             ))}
           </div>
+
         </ExportSection>
       ))}
     </div>
