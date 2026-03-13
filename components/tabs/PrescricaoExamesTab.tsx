@@ -13,6 +13,7 @@ interface Exame {
   nome: string;
   obs?: string;
   jejum?: boolean;
+  amostra?: "Sangue" | "Urina" | "Fezes" | "Saliva";
   subExames?: SubExame[];
 }
 
@@ -30,6 +31,7 @@ const GRUPOS: Grupo[] = [
       {
         nome: "Hemograma Completo",
         jejum: false,
+        amostra: "Sangue",
         subExames: [
           { nome: "Hemoglobina" },
           { nome: "Hematócrito" },
@@ -60,6 +62,7 @@ const GRUPOS: Grupo[] = [
       {
         nome: "Perfil Glicêmico",
         jejum: true,
+        amostra: "Sangue",
         subExames: [
           { nome: "Glicemia de Jejum" },
           { nome: "Hemoglobina Glicada (HbA1c)" },
@@ -77,6 +80,7 @@ const GRUPOS: Grupo[] = [
       {
         nome: "Lipidograma Completo",
         jejum: true,
+        amostra: "Sangue",
         subExames: [
           { nome: "Colesterol Total" },
           { nome: "HDL Colesterol (fração protetora)" },
@@ -97,6 +101,7 @@ const GRUPOS: Grupo[] = [
       {
         nome: "Painel Tireoidiano",
         jejum: false,
+        amostra: "Sangue",
         subExames: [
           { nome: "TSH (Hormônio Estimulante da Tireoide)" },
           { nome: "T4 Livre (Tiroxina Livre)" },
@@ -108,6 +113,7 @@ const GRUPOS: Grupo[] = [
       {
         nome: "Autoimunidade Tireoidiana",
         jejum: false,
+        amostra: "Sangue",
         subExames: [
           { nome: "Anti-TPO (Anticorpos Anti-Tireoperoxidase)" },
           { nome: "Anti-TG (Anticorpos Anti-Tireoglobulina)" },
@@ -123,6 +129,7 @@ const GRUPOS: Grupo[] = [
       {
         nome: "Vitaminas Lipossolúveis",
         jejum: true,
+        amostra: "Sangue",
         subExames: [
           { nome: "Vitamina D (25-hidroxivitamina D — 25-OH-D3)" },
           { nome: "Vitamina A (Retinol Sérico)" },
@@ -132,6 +139,7 @@ const GRUPOS: Grupo[] = [
       {
         nome: "Vitaminas Hidrossolúveis",
         jejum: false,
+        amostra: "Sangue",
         subExames: [
           { nome: "Vitamina B12 (Cobalamina)" },
           { nome: "Vitamina B9 (Ácido Fólico Sérico)" },
@@ -142,6 +150,7 @@ const GRUPOS: Grupo[] = [
       {
         nome: "Ferro e Anemia",
         jejum: true,
+        amostra: "Sangue",
         subExames: [
           { nome: "Ferritina Sérica" },
           { nome: "Ferro Sérico" },
@@ -159,6 +168,7 @@ const GRUPOS: Grupo[] = [
       {
         nome: "Painel Mineral",
         jejum: false,
+        amostra: "Sangue",
         subExames: [
           { nome: "Zinco Sérico" },
           { nome: "Magnésio Sérico" },
@@ -170,6 +180,7 @@ const GRUPOS: Grupo[] = [
       {
         nome: "Eletrólitos",
         jejum: false,
+        amostra: "Sangue",
         subExames: [
           { nome: "Sódio Sérico" },
           { nome: "Potássio Sérico" },
@@ -188,6 +199,7 @@ const GRUPOS: Grupo[] = [
       {
         nome: "Enzimas Hepáticas",
         jejum: true,
+        amostra: "Sangue",
         subExames: [
           { nome: "TGO / AST (Aspartato Aminotransferase)" },
           { nome: "TGP / ALT (Alanina Aminotransferase)" },
@@ -199,6 +211,7 @@ const GRUPOS: Grupo[] = [
       {
         nome: "Síntese e Metabolismo Hepático",
         jejum: true,
+        amostra: "Sangue",
         subExames: [
           { nome: "Albumina Sérica" },
           { nome: "Proteínas Totais e Frações" },
@@ -215,6 +228,7 @@ const GRUPOS: Grupo[] = [
       {
         nome: "Painel Renal",
         jejum: true,
+        amostra: "Sangue",
         subExames: [
           { nome: "Creatinina Sérica" },
           { nome: "Taxa de Filtração Glomerular (TFG estimada — CKD-EPI)" },
@@ -226,6 +240,7 @@ const GRUPOS: Grupo[] = [
       {
         nome: "Urina",
         jejum: false,
+        amostra: "Urina",
         subExames: [
           { nome: "Urina de Rotina (EQU)" },
           { nome: "Microalbuminúria (urina de 24h ou spot)", obs: "Se DM ou HAS" },
@@ -241,6 +256,7 @@ const GRUPOS: Grupo[] = [
       {
         nome: "Marcadores Inflamatórios",
         jejum: false,
+        amostra: "Sangue",
         subExames: [
           { nome: "Proteína C-Reativa Ultra-Sensível (PCR-us)" },
           { nome: "VHS (Velocidade de Hemossedimentação)" },
@@ -267,16 +283,23 @@ export function PrescricaoExamesTab() {
                     <div className="w-1.5 h-1.5 rounded-full bg-slate-400 flex-shrink-0" />
                     <span className="text-sm font-semibold text-slate-800">{exame.nome}</span>
                   </div>
-                  {exame.jejum !== undefined && (
-                    <Chip
-                      size="sm"
-                      variant="flat"
-                      color={exame.jejum ? "primary" : "default"}
-                      className="text-[10px]"
-                    >
-                      {exame.jejum ? "Jejum 12h" : "Sem jejum"}
-                    </Chip>
-                  )}
+                  <div className="flex items-center gap-2">
+                    {exame.amostra && (
+                      <Chip size="sm" variant="bordered" className="text-[10px] text-slate-500">
+                        {exame.amostra}
+                      </Chip>
+                    )}
+                    {exame.jejum !== undefined && (
+                      <Chip
+                        size="sm"
+                        variant="flat"
+                        color={exame.jejum ? "primary" : "default"}
+                        className="text-[10px]"
+                      >
+                        {exame.jejum ? "Jejum 12h" : "Sem jejum"}
+                      </Chip>
+                    )}
+                  </div>
                 </div>
 
                 {/* Sub-exames */}

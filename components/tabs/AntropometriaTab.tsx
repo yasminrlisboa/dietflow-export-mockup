@@ -357,18 +357,25 @@ export function AntropometriaTab() {
               </thead>
               <tbody>
                 {[
-                  { nome: "Cervical",         valores: [37.5, 37.2, 36.8, 36.5], ref: "< 38 cm" },
-                  { nome: "Cintura",          valores: [82.0, 80.5, 79.5, 78.5], ref: "< 80 cm" },
-                  { nome: "Abdominal",        valores: [88.0, 86.0, 84.5, 83.0], ref: "< 88 cm" },
-                  { nome: "Quadril",          valores: [106.0, 104.5, 103.2, 102.0], ref: "proporcional" },
-                  { nome: "Coxa D (proximal)",valores: [59.0, 58.2, 57.5, 57.0], ref: "proporcional" },
-                  { nome: "Panturrilha D",    valores: [37.8, 37.5, 37.2, 37.0], ref: "proporcional" },
-                  { nome: "Braço D (relaxado)", valores: [31.0, 30.5, 30.2, 30.0], ref: "proporcional" },
-                  { nome: "Braço D (contraído)", valores: [33.2, 33.0, 32.7, 32.5], ref: "proporcional" },
+                  { nome: "Cervical",              valores: [37.5, 37.2, 36.8, 36.5], ref: "< 38 cm",      negBom: true  },
+                  { nome: "Ombro",                 valores: [108.0, 107.5, 107.0, 106.5], ref: "proporcional", negBom: false },
+                  { nome: "Tórax",                 valores: [93.0, 92.0, 91.5, 91.0], ref: "proporcional", negBom: false },
+                  { nome: "Cintura",               valores: [82.0, 80.5, 79.5, 78.5], ref: "< 80 cm",      negBom: true  },
+                  { nome: "Abdominal",             valores: [88.0, 86.0, 84.5, 83.0], ref: "< 88 cm",      negBom: true  },
+                  { nome: "Quadril",               valores: [106.0, 104.5, 103.2, 102.0], ref: "proporcional", negBom: true  },
+                  { nome: "Braço D (relaxado)",    valores: [31.0, 30.5, 30.2, 30.0], ref: "proporcional", negBom: false },
+                  { nome: "Braço D (contraído)",   valores: [33.2, 33.0, 32.7, 32.5], ref: "proporcional", negBom: false },
+                  { nome: "Braço E (relaxado)",    valores: [30.5, 30.0, 29.8, 29.5], ref: "proporcional", negBom: false },
+                  { nome: "Antebraço D",           valores: [24.0, 23.8, 23.6, 23.5], ref: "proporcional", negBom: false },
+                  { nome: "Antebraço E",           valores: [23.5, 23.3, 23.2, 23.0], ref: "proporcional", negBom: false },
+                  { nome: "Coxa D (proximal)",     valores: [59.0, 58.2, 57.5, 57.0], ref: "proporcional", negBom: true  },
+                  { nome: "Coxa D (medial)",       valores: [52.0, 51.5, 51.0, 50.5], ref: "proporcional", negBom: true  },
+                  { nome: "Coxa E (proximal)",     valores: [58.5, 57.8, 57.2, 56.7], ref: "proporcional", negBom: true  },
+                  { nome: "Panturrilha D",         valores: [37.8, 37.5, 37.2, 37.0], ref: "proporcional", negBom: false },
+                  { nome: "Panturrilha E",         valores: [37.5, 37.2, 37.0, 36.8], ref: "proporcional", negBom: false },
                 ].map((circ, si) => {
                   const d = delta(circ.valores);
-                  const negBom = circ.nome.includes("Cintura") || circ.nome.includes("Abdominal") || circ.nome.includes("Quadril") || circ.nome.includes("Cervical");
-                  const cor = d ? (d.valor < 0 ? (negBom ? "text-green-600" : "text-red-600") : (negBom ? "text-red-600" : "text-green-600")) : "text-slate-400";
+                  const cor = d ? (d.valor < 0 ? (circ.negBom ? "text-green-600" : "text-red-600") : (circ.negBom ? "text-red-600" : "text-green-600")) : "text-slate-400";
                   return (
                     <tr key={si} className={`border-b border-slate-50 ${si % 2 !== 0 ? "bg-slate-50/40" : ""}`}>
                       <td className="px-4 py-2.5 font-medium text-slate-700">{circ.nome}</td>
@@ -446,6 +453,105 @@ export function AntropometriaTab() {
                   <td colSpan={3} />
                   <td className="text-center px-3 py-2.5 font-extrabold text-green-600">▼ 14 mm</td>
                 </tr>
+              </tbody>
+            </table>
+          </CardBody>
+        </Card>
+      </ExportSection>
+
+      {/* Diâmetros Ósseos */}
+      <ExportSection title="Diâmetros Ósseos">
+        <Card shadow="none" classNames={{ base: "border border-slate-200" }}>
+          <CardBody className="p-0">
+            <table className="w-full text-xs">
+              <thead>
+                <tr className="border-b border-slate-100 bg-slate-50">
+                  <th className="text-left px-4 py-2.5 font-semibold text-slate-500 uppercase tracking-wider">Segmento</th>
+                  <th className="text-right px-4 py-2.5 font-semibold text-slate-400 uppercase tracking-wider">Medida</th>
+                  <th className="text-right px-4 py-2.5 font-semibold text-slate-500 uppercase tracking-wider">Referência (♀)</th>
+                  <th className="text-center px-4 py-2.5 font-semibold text-slate-500 uppercase tracking-wider">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { nome: "Úmero D (epicôndilos)",  valor: 6.4, refMin: 5.8, refMax: 7.0, unidade: "cm" },
+                  { nome: "Punho D (estiloides)",    valor: 5.1, refMin: 4.5, refMax: 5.5, unidade: "cm" },
+                  { nome: "Fêmur D (epicôndilos)",   valor: 8.8, refMin: 8.0, refMax: 9.6, unidade: "cm" },
+                ].map((d, i) => {
+                  const ok = d.valor >= d.refMin && d.valor <= d.refMax;
+                  return (
+                    <tr key={i} className={`border-b border-slate-50 ${i % 2 !== 0 ? "bg-slate-50/40" : ""}`}>
+                      <td className="px-4 py-2.5 font-medium text-slate-700">{d.nome}</td>
+                      <td className="px-4 py-2.5 text-right font-mono font-bold text-slate-900">{d.valor.toFixed(1)} {d.unidade}</td>
+                      <td className="px-4 py-2.5 text-right text-slate-400">{d.refMin.toFixed(1)}–{d.refMax.toFixed(1)} {d.unidade}</td>
+                      <td className="px-4 py-2.5 text-center">
+                        <Chip size="sm" variant="flat" color={ok ? "success" : "warning"}>{ok ? "Adequado" : "Avaliar"}</Chip>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </CardBody>
+        </Card>
+      </ExportSection>
+
+      {/* Bioimpedância */}
+      <ExportSection title="Bioimpedância Elétrica (BIA)">
+        <Card shadow="none" classNames={{ base: "border border-slate-200 mb-3" }}>
+          <CardBody>
+            <div className="grid grid-cols-3 gap-x-6 gap-y-3 mb-3">
+              {[
+                { label: "Equipamento", value: "InBody 270" },
+                { label: "Data / Hora", value: "11/03/2026 · 08h15" },
+                { label: "Condições", value: "Jejum 4h, bexiga vazia, sem exercício 24h" },
+              ].map(({ label, value }) => (
+                <div key={label}>
+                  <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">{label}</div>
+                  <div className="text-xs font-semibold text-slate-700 mt-0.5">{value}</div>
+                </div>
+              ))}
+            </div>
+          </CardBody>
+        </Card>
+
+        <Card shadow="none" classNames={{ base: "border border-slate-200" }}>
+          <CardBody className="p-0">
+            <table className="w-full text-xs">
+              <thead>
+                <tr className="border-b border-slate-100 bg-slate-50">
+                  <th className="text-left px-4 py-2.5 font-semibold text-slate-500 uppercase tracking-wider">Parâmetro</th>
+                  <th className="text-right px-4 py-2.5 font-semibold text-indigo-600 uppercase tracking-wider">Mar/26</th>
+                  <th className="text-right px-4 py-2.5 font-semibold text-slate-400 uppercase tracking-wider">Referência</th>
+                  <th className="text-center px-4 py-2.5 font-semibold text-slate-500 uppercase tracking-wider">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { nome: "Massa Magra (kg)",            valor: "52,4 kg", ref: "49–60 kg",       ok: true  },
+                  { nome: "Massa Gorda (kg)",             valor: "25,6 kg", ref: "< 24 kg",        ok: false },
+                  { nome: "% Gordura Corporal",           valor: "32,8%",   ref: "20–30%",         ok: false },
+                  { nome: "Água Corporal Total (L)",      valor: "33,8 L",  ref: "31,5–39,5 L",    ok: true  },
+                  { nome: "Água Intracelular (L)",        valor: "20,1 L",  ref: "18,5–24,0 L",    ok: true  },
+                  { nome: "Água Extracelular (L)",        valor: "13,7 L",  ref: "12,5–16,5 L",    ok: true  },
+                  { nome: "Índice de Hidratação (ECW/TBW)", valor: "0,405", ref: "0,36–0,39",      ok: false },
+                  { nome: "Metabolismo Basal (BIA)",      valor: "1.489 kcal", ref: "—",           ok: true  },
+                  { nome: "Impedância (ω 50Hz)",          valor: "498 Ω",   ref: "450–600 Ω",      ok: true  },
+                  { nome: "Ângulo de Fase (°)",           valor: "5,8°",    ref: "5,0–8,0° (♀)",   ok: true  },
+                ].map((item, i) => (
+                  <tr key={i} className={`border-b border-slate-50 ${i % 2 !== 0 ? "bg-slate-50/40" : ""}`}>
+                    <td className="px-4 py-2.5 font-medium text-slate-700">{item.nome}</td>
+                    <td className="px-4 py-2.5 text-right font-mono font-bold text-slate-900">{item.valor}</td>
+                    <td className="px-4 py-2.5 text-right text-slate-400">{item.ref}</td>
+                    <td className="px-4 py-2.5 text-center">
+                      {item.ref !== "—" && (
+                        <Chip size="sm" variant="flat" color={item.ok ? "success" : "warning"}>
+                          {item.ok ? "Adequado" : "Atenção"}
+                        </Chip>
+                      )}
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </CardBody>

@@ -157,6 +157,11 @@ export function CalculoTab() {
                   <TableCell className="text-right font-extrabold text-lg" style={{ color: "var(--green-dark)" }}>1.979 kcal</TableCell>
                   <TableCell className="text-xs text-slate-600 font-medium">Valor Energético Total prescrito</TableCell>
                 </TableRow>
+                <TableRow>
+                  <TableCell className="font-semibold text-slate-700 text-sm">VET/kg</TableCell>
+                  <TableCell className="text-right font-bold text-slate-900">25,4 kcal/kg</TableCell>
+                  <TableCell className="text-xs text-slate-500">1.979 kcal ÷ 78 kg de peso corporal</TableCell>
+                </TableRow>
               </TableBody>
             </Table>
           </CardBody>

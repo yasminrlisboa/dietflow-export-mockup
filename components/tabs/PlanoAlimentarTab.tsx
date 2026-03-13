@@ -20,12 +20,21 @@ interface Refeicao {
   totais: { ptn: number; cho: number; lip: number; kcal: number };
 }
 
+interface Micronutriente {
+  nome: string;
+  valor: number;
+  unidade: string;
+  dri: number;
+  pctDRI: number;
+}
+
 interface Cenario {
   nome: string;
   dias: string[];
   vet: number;
   refeicoes: Refeicao[];
   macros: { ptn: number; cho: number; lip: number };
+  micronutrientes: Micronutriente[];
 }
 
 const CENARIOS: Cenario[] = [
@@ -34,6 +43,22 @@ const CENARIOS: Cenario[] = [
     dias: ["Seg", "Ter", "Qua", "Qui", "Sex"],
     vet: 2100,
     macros: { ptn: 158, cho: 245, lip: 58 },
+    micronutrientes: [
+      { nome: "Vitamina A",     valor: 1245, unidade: "mcg RE", dri: 700,  pctDRI: 178 },
+      { nome: "Vitamina D",     valor: 18,   unidade: "mcg",    dri: 15,   pctDRI: 120 },
+      { nome: "Vitamina E",     valor: 12,   unidade: "mg",     dri: 15,   pctDRI: 80  },
+      { nome: "Vitamina C",     valor: 89,   unidade: "mg",     dri: 75,   pctDRI: 119 },
+      { nome: "Vitamina B12",   valor: 3.2,  unidade: "mcg",    dri: 2.4,  pctDRI: 133 },
+      { nome: "Ácido Fólico",   valor: 285,  unidade: "mcg",    dri: 400,  pctDRI: 71  },
+      { nome: "Cálcio",         valor: 820,  unidade: "mg",     dri: 1000, pctDRI: 82  },
+      { nome: "Ferro",          valor: 14,   unidade: "mg",     dri: 18,   pctDRI: 78  },
+      { nome: "Magnésio",       valor: 298,  unidade: "mg",     dri: 320,  pctDRI: 93  },
+      { nome: "Potássio",       valor: 3280, unidade: "mg",     dri: 2600, pctDRI: 126 },
+      { nome: "Sódio",          valor: 1450, unidade: "mg",     dri: 2300, pctDRI: 63  },
+      { nome: "Zinco",          valor: 9.2,  unidade: "mg",     dri: 8,    pctDRI: 115 },
+      { nome: "Selênio",        valor: 48,   unidade: "mcg",    dri: 55,   pctDRI: 87  },
+      { nome: "Fósforo",        valor: 1180, unidade: "mg",     dri: 700,  pctDRI: 169 },
+    ],
     refeicoes: [
       {
         nome: "Café da Manhã", emoji: "☀️", horario: "07:00",
@@ -90,6 +115,22 @@ const CENARIOS: Cenario[] = [
     dias: ["Sáb", "Dom"],
     vet: 1850,
     macros: { ptn: 140, cho: 210, lip: 55 },
+    micronutrientes: [
+      { nome: "Vitamina A",     valor: 980,  unidade: "mcg RE", dri: 700,  pctDRI: 140 },
+      { nome: "Vitamina D",     valor: 22,   unidade: "mcg",    dri: 15,   pctDRI: 147 },
+      { nome: "Vitamina E",     valor: 10,   unidade: "mg",     dri: 15,   pctDRI: 67  },
+      { nome: "Vitamina C",     valor: 72,   unidade: "mg",     dri: 75,   pctDRI: 96  },
+      { nome: "Vitamina B12",   valor: 4.1,  unidade: "mcg",    dri: 2.4,  pctDRI: 171 },
+      { nome: "Ácido Fólico",   valor: 220,  unidade: "mcg",    dri: 400,  pctDRI: 55  },
+      { nome: "Cálcio",         valor: 710,  unidade: "mg",     dri: 1000, pctDRI: 71  },
+      { nome: "Ferro",          valor: 12,   unidade: "mg",     dri: 18,   pctDRI: 67  },
+      { nome: "Magnésio",       valor: 265,  unidade: "mg",     dri: 320,  pctDRI: 83  },
+      { nome: "Potássio",       valor: 2950, unidade: "mg",     dri: 2600, pctDRI: 113 },
+      { nome: "Sódio",          valor: 1680, unidade: "mg",     dri: 2300, pctDRI: 73  },
+      { nome: "Zinco",          valor: 8.5,  unidade: "mg",     dri: 8,    pctDRI: 106 },
+      { nome: "Selênio",        valor: 55,   unidade: "mcg",    dri: 55,   pctDRI: 100 },
+      { nome: "Fósforo",        valor: 1050, unidade: "mg",     dri: 700,  pctDRI: 150 },
+    ],
     refeicoes: [
       {
         nome: "Café da Manhã", emoji: "☀️", horario: "09:00",
@@ -140,6 +181,22 @@ const CENARIOS: Cenario[] = [
     dias: ["Seg", "Qua", "Sex"],
     vet: 2350,
     macros: { ptn: 176, cho: 278, lip: 58 },
+    micronutrientes: [
+      { nome: "Vitamina A",     valor: 1560, unidade: "mcg RE", dri: 700,  pctDRI: 223 },
+      { nome: "Vitamina D",     valor: 20,   unidade: "mcg",    dri: 15,   pctDRI: 133 },
+      { nome: "Vitamina E",     valor: 14,   unidade: "mg",     dri: 15,   pctDRI: 93  },
+      { nome: "Vitamina C",     valor: 105,  unidade: "mg",     dri: 75,   pctDRI: 140 },
+      { nome: "Vitamina B12",   valor: 3.8,  unidade: "mcg",    dri: 2.4,  pctDRI: 158 },
+      { nome: "Ácido Fólico",   valor: 340,  unidade: "mcg",    dri: 400,  pctDRI: 85  },
+      { nome: "Cálcio",         valor: 890,  unidade: "mg",     dri: 1000, pctDRI: 89  },
+      { nome: "Ferro",          valor: 16,   unidade: "mg",     dri: 18,   pctDRI: 89  },
+      { nome: "Magnésio",       valor: 348,  unidade: "mg",     dri: 320,  pctDRI: 109 },
+      { nome: "Potássio",       valor: 3680, unidade: "mg",     dri: 2600, pctDRI: 142 },
+      { nome: "Sódio",          valor: 1620, unidade: "mg",     dri: 2300, pctDRI: 70  },
+      { nome: "Zinco",          valor: 11.5, unidade: "mg",     dri: 8,    pctDRI: 144 },
+      { nome: "Selênio",        valor: 62,   unidade: "mcg",    dri: 55,   pctDRI: 113 },
+      { nome: "Fósforo",        valor: 1380, unidade: "mg",     dri: 700,  pctDRI: 197 },
+    ],
     refeicoes: [
       {
         nome: "Café da Manhã", emoji: "☀️", horario: "06:30",
@@ -201,6 +258,37 @@ const CENARIOS: Cenario[] = [
   },
 ];
 
+function MicronutrientesTable({ items }: { items: Micronutriente[] }) {
+  return (
+    <Card shadow="none" classNames={{ base: "border border-slate-200 mt-3" }}>
+      <CardHeader className="pb-0 pt-3 px-4">
+        <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+          Micronutrientes — Estimativa do Dia (% DRI para ♀ adulta)
+        </span>
+      </CardHeader>
+      <CardBody className="pt-2 pb-3">
+        <div className="grid grid-cols-2 gap-x-6 gap-y-2">
+          {items.map((m) => {
+            const cor = m.pctDRI >= 100 ? "bg-emerald-400" : m.pctDRI >= 70 ? "bg-amber-400" : "bg-red-400";
+            return (
+              <div key={m.nome}>
+                <div className="flex justify-between text-[10px] mb-0.5">
+                  <span className="font-semibold text-slate-600">{m.nome}</span>
+                  <span className="text-slate-400">{m.valor} {m.unidade} · <span className={m.pctDRI >= 100 ? "text-emerald-600 font-bold" : m.pctDRI >= 70 ? "text-amber-600 font-bold" : "text-red-500 font-bold"}>{m.pctDRI}%</span></span>
+                </div>
+                <div className="h-1 bg-slate-100 rounded-full overflow-hidden">
+                  <div className={`h-full rounded-full ${cor}`} style={{ width: `${Math.min(m.pctDRI, 100)}%` }} />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        <p className="text-[10px] text-slate-400 mt-3 italic">Valores estimados com base nos alimentos prescritos. DRI: Dietary Reference Intake (Institute of Medicine). Variação de ±15% esperada.</p>
+      </CardBody>
+    </Card>
+  );
+}
+
 function MacroBar({ ptn, cho, lip }: { ptn: number; cho: number; lip: number }) {
   const total = ptn * 4 + cho * 4 + lip * 9;
   const ptnPct = Math.round((ptn * 4 / total) * 100);
@@ -259,6 +347,7 @@ export function PlanoAlimentarTab() {
           </Card>
 
           {cenario.refeicoes.map((ref, ri) => (
+
             <Card key={ri} shadow="none" classNames={{ base: "mb-3 overflow-hidden" }} style={{ border: "1px solid #f1f5f9" }}>
               {/* Cabeçalho da refeição com fundo levemente tintado */}
               <CardHeader
@@ -312,6 +401,8 @@ export function PlanoAlimentarTab() {
               </CardBody>
             </Card>
           ))}
+
+          <MicronutrientesTable items={cenario.micronutrientes} />
         </ExportSection>
       ))}
     </div>

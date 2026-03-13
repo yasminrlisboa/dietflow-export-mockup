@@ -65,14 +65,17 @@ const GI = {
 const PROBLEMAS_SAUDE = [
   {
     nome: "Hipotireoidismo subclínico (histórico)",
+    cid: "E02 | Cap. IV — Endócrino | Hipotireoidismo",
     detalhe: "TSH 4,2 μUI/mL em 2022 — normalizado espontaneamente em 2023. Monitorar.",
   },
   {
     nome: "Dislipidemia",
+    cid: "E78.5 | Cap. IV — Endócrino | Hiperlipidemia não especificada",
     detalhe: "LDL elevado em exame de fevereiro/2026. Sem medicação. Alvo de intervenção nutricional.",
   },
   {
     nome: "Possível sensibilidade à lactose",
+    cid: "E73.9 | Cap. IV — Endócrino | Intolerância à lactose não especificada",
     detalhe: "Não diagnosticada formalmente. Melhora sintomática com leite zero lactose.",
   },
 ];
@@ -248,7 +251,10 @@ export function AnamneseTab() {
           {PROBLEMAS_SAUDE.map((p) => (
             <div key={p.nome} className="border border-slate-200 rounded-xl px-4 py-3">
               <p className="text-sm font-semibold text-slate-800">{p.nome}</p>
-              <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">{p.detalhe}</p>
+              {p.cid && (
+                <p className="text-[10px] text-slate-400 font-mono mt-0.5">{p.cid}</p>
+              )}
+              <p className="text-xs text-slate-500 mt-1 leading-relaxed">{p.detalhe}</p>
             </div>
           ))}
         </div>
