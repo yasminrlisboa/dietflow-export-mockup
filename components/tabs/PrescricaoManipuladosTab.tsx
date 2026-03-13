@@ -116,15 +116,6 @@ function TabelaMoleculas({ moleculas }: { moleculas: Molecula[] }) {
 export function PrescricaoManipuladosTab() {
   return (
     <div>
-      <Card shadow="none" classNames={{ base: "border border-blue-100 bg-blue-50 mb-5" }}>
-        <CardBody className="py-3 px-4">
-          <p className="text-xs text-blue-800 leading-relaxed">
-            <span className="font-bold">Prescrição de manipulados.</span> Documento destinado à farmácia de manipulação.
-            Preparar conforme composição, forma farmacêutica e posologia especificadas. Validade da receita: 30 dias.
-          </p>
-        </CardBody>
-      </Card>
-
       {FORMULACOES.map((f, idx) => (
         <ExportSection key={f.id} title={`${idx + 1}. ${f.nome}`}>
           <div className="border border-slate-200 rounded-xl overflow-hidden">

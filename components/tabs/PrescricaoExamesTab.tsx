@@ -254,44 +254,10 @@ const GRUPOS: Grupo[] = [
 ];
 
 export function PrescricaoExamesTab() {
-  const totalParams = GRUPOS.reduce(
-    (acc, g) => acc + g.exames.reduce((a, e) => a + (e.subExames?.length ?? 1), 0),
-    0
-  );
-
   return (
     <div>
-      {/* Indicação clínica */}
-      <Card shadow="none" classNames={{ base: "border border-blue-100 bg-blue-50 mb-5" }}>
-        <CardBody className="py-3 px-4">
-          <p className="text-xs text-blue-800 leading-relaxed">
-            <span className="font-bold">Indicação clínica:</span> Avaliação do estado nutricional, monitoramento
-            metabólico e investigação de deficiências nutricionais. Jejum de{" "}
-            <span className="font-semibold">12 horas</span> obrigatório nos exames marcados com{" "}
-            <span className="font-semibold">Jejum 12h</span>. Coletar em um único laboratório.
-          </p>
-        </CardBody>
-      </Card>
-
-      {/* Resumo */}
-      <div className="flex gap-3 mb-6">
-        {[
-          { label: "Grupos",     value: GRUPOS.length },
-          { label: "Painéis",   value: GRUPOS.reduce((a, g) => a + g.exames.length, 0) },
-          { label: "Parâmetros", value: totalParams },
-        ].map((item) => (
-          <div key={item.label} className="border border-slate-200 rounded-xl px-4 py-2 text-center">
-            <div className="text-lg font-extrabold text-slate-800">{item.value}</div>
-            <div className="text-[10px] uppercase tracking-wider text-slate-400 font-medium">{item.label}</div>
-          </div>
-        ))}
-      </div>
-
       {GRUPOS.map((grupo, gi) => (
         <ExportSection key={gi} title={grupo.nome}>
-          {grupo.indicacao && (
-            <p className="text-xs text-slate-400 italic mb-3">{grupo.indicacao}</p>
-          )}
           <div className="space-y-2">
             {grupo.exames.map((exame, ei) => (
               <div key={ei} className="border border-slate-200 rounded-xl overflow-hidden">

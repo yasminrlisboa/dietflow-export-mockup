@@ -1,106 +1,310 @@
 "use client";
-import { Card, CardBody, CardHeader, Chip } from "@heroui/react";
+import { Card, CardBody, CardHeader, Chip, Divider } from "@heroui/react";
 import { ExportSection } from "../ExportSection";
 
-const SECOES = [
-  {
-    titulo: "Queixa Principal e Motivo da Consulta",
-    chips: ["Perda de peso", "Melhora da composição corporal", "Redução do colesterol"],
-    conteudo: `Paciente Ana Silva Santos, 32 anos, procura atendimento nutricional com o objetivo principal de perder peso e melhorar sua composição corporal. Relata ganho de aproximadamente 12 kg nos últimos 3 anos, que coincide com mudança de emprego para cargo administrativo com menor atividade física, período de alta demanda emocional e uso de anticoncepcional hormonal. Além da perda ponderal, deseja melhora nos níveis de colesterol (LDL elevado em exame recente) e mais disposição no dia a dia. Refere cansaço excessivo, especialmente nas tardes, e dificuldade para "desligar" à noite, o que prejudica a qualidade do sono.
+/* ─── Dados de Rotina do Dia ─────────────────────────── */
+const REFEICOES = [
+  { nome: "Café da manhã", horario: "08:00", descricao: "Frequentemente pulado — sai cedo para o trabalho" },
+  { nome: "Lanche da manhã", horario: "10:00", descricao: "Biscoito recheado ou salgado de padaria" },
+  { nome: "Almoço", horario: "13:00", descricao: "Refeitório da empresa, sem critérios nutricionais definidos" },
+  { nome: "Lanche da tarde", horario: "16:30", descricao: "Castanhas, chocolate ou biscoito salgado" },
+  { nome: "Jantar", horario: "19:30", descricao: "Refeição completa + petiscos em frente à TV — maior descontrole alimentar" },
+];
 
-Já realizou dietas restritivas por conta própria (low carb, jejum de 24h) sem sucesso duradouro — relata perder peso mas recuperar logo após. Nega histórico de transtornos alimentares, mas reconhece relação emocional com comida em momentos de estresse ("como ansiedade"). Motivação atual: casamento programado para dezembro/2026 e resultados dos exames de fevereiro/2026 que indicaram necessidade de intervenção.`,
+const EXERCICIOS = [
+  { nome: "Musculação (Upper + Lower)", horario: "07:00", descricao: "Seg, qua, sex — 60 min com personal trainer" },
+  { nome: "Corrida / esteira", horario: "06:30", descricao: "Ter, qui — 45 min, intensidade moderada-alta" },
+  { nome: "Yoga e mobilidade", horario: "09:00", descricao: "Sáb — 60 min, leve" },
+  { nome: "Descanso ativo", horario: "—", descricao: "Dom — caminhada ou atividade livre" },
+];
+
+const REMEDIOS = [
+  { nome: "Anticoncepcional oral combinado", horario: "08:00", descricao: "Levonorgestrel 0,15mg + Etinilestradiol 0,03mg — uso contínuo há 4 anos" },
+];
+
+const SUPLEMENTOS = [
+  { nome: "Whey Protein", horario: "Pós-treino", descricao: "Tentou por 3 meses em 2024, abandonou por sabor ruim — não está em uso" },
+];
+
+/* ─── Dados de Hidratação ────────────────────────────── */
+const HIDRATACAO = {
+  litros: 1.3,
+  copos: 5,
+  perfil: "Moderadamente ativa",
+  recomendado: "35–40 ml/kg ≈ 2,7 L/dia",
+  peso: 78,
+};
+
+/* ─── Dados de Sono ──────────────────────────────────── */
+const SONO = {
+  horas: 6,
+  acorda: "1–2 vezes por noite",
+  satisfacao: "Ruim",
+  interferencia: "Moderada",
+  preocupacao: "Alguma",
+  scoreISI: 9,
+  scoreMax: 28,
+  classificacao: "Insônia subclínica",
+  obs: "Dificuldade para iniciar o sono, sono fragmentado e não reparador",
+};
+
+/* ─── Hábito Intestinal ──────────────────────────────── */
+const GI = {
+  bristol: "Tipo 3–4",
+  frequencia: "A cada 2 dias",
+  inchaco: "Leve",
+  gases: "Leve",
+  dorAbdominal: "Ausente",
+  refluxo: "Leve (1–2x/semana)",
+  giScore: 5,
+  giScoreMax: 21,
+  classificacaoGI: "Atenção",
+};
+
+/* ─── Problemas de Saúde ─────────────────────────────── */
+const PROBLEMAS_SAUDE = [
+  {
+    nome: "Hipotireoidismo subclínico (histórico)",
+    detalhe: "TSH 4,2 μUI/mL em 2022 — normalizado espontaneamente em 2023. Monitorar.",
   },
   {
-    titulo: "Histórico de Saúde e Medicamentos",
-    chips: ["Saudável", "Sem comorbidades ativas"],
-    conteudo: `Histórico pessoal: Sem comorbidades crônicas diagnosticadas. Histórico de hipotireoidismo subclínico investigado em 2022 (TSH 4,2 μUI/mL), normalizado espontaneamente em reavaliação de 2023. Nega diabetes, hipertensão, doenças cardiovasculares ou autoimunes. Histórico de cistites de repetição entre 2019–2021, resolvido após ajuste da hidratação e pH alimentar.
-
-Histórico familiar relevante: Mãe com obesidade (IMC 32), diabetes tipo 2 diagnosticada aos 50 anos e hipotireoidismo. Pai com hipertensão e dislipidemia em tratamento farmacológico. Avó materna com doença cardiovascular. Histórico familiar indica predisposição genética para síndrome metabólica — fator importante no planejamento nutricional de longo prazo.
-
-Medicamentos em uso: Anticoncepcional oral combinado (levonorgestrel + etinilestradiol, 0,15mg/0,03mg) — em uso contínuo há 4 anos. Sem outros medicamentos regulares. Nega uso de corticoides, antidepressivos ou outros medicamentos que possam interferir no metabolismo. Suplementação anterior: tentou Whey Protein por 3 meses em 2024 mas abandonou por "sabor ruim".`,
+    nome: "Dislipidemia",
+    detalhe: "LDL elevado em exame de fevereiro/2026. Sem medicação. Alvo de intervenção nutricional.",
   },
   {
-    titulo: "Histórico e Comportamento Alimentar",
-    chips: ["Compulsão ocasional", "Comer emocional", "Restrição prévia"],
-    conteudo: `Histórico alimentar: Padrão alimentar atual desorganizado, sem horários fixos. Frequentemente pula o café da manhã (sai cedo para o trabalho), faz um lanche rápido às 10h (biscoito recheado ou salgado da padaria), almoça "o que tiver" no refeitório da empresa sem critérios nutricionais claros, e chega em casa com muita fome às 19h — momento em que relata maior descontrole alimentar. Jantar geralmente composto por refeição completa mais petiscos (castanhas, chocolate, biscoito salgado enquanto "descansa" na frente da TV).
-
-Preferências e aversões: Aprecia carnes (especialmente frango e peixe), frutas, iogurte e saladas. Tem dificuldade com amargos (rúcula, brócolis cru). Gosta de doces mas não os considera compulsivos. Nega intolerância alimentar diagnósticada, mas relata "barriga inchada" após consumo de leite integral em grandes quantidades — possível intolerância leve à lactose.
-
-Frequência de refeições fora de casa: 5x/semana (almoço no trabalho). Consumo de álcool: 2–3 doses/semana (vinho aos fins de semana principalmente). Consumo de cafeína: 2 cafés/dia. Ingestão hídrica estimada: 1,2–1,5L/dia (abaixo do adequado para seu peso e atividade física).
-
-Comportamento em situações de estresse: Busca comida como conforto, especialmente doces e carboidratos simples. Reconhece o padrão mas tem dificuldade de quebrar o ciclo fome-emocional-culpa.`,
-  },
-  {
-    titulo: "Atividade Física e Rotina",
-    chips: ["Iniciante", "6 sessões/semana", "Sedentário anteriormente"],
-    conteudo: `Histórico de atividade física: Sedentária por aproximadamente 3 anos (coincide com novo emprego). Praticou natação na adolescência e musculação por 1 ano durante a faculdade. Iniciou academia há 2 meses com personal trainer.
-
-Rotina atual de exercícios:
-— Musculação (Upper + Lower): segunda, quarta e sexta-feira às 07h00 (60 min)
-— Corrida na esteira ou parque: terça e quinta-feira às 06h30 (45 min, intensidade moderada-alta)
-— Yoga e mobilidade: sábado às 09h00 (60 min, leve)
-— Domingo: descanso ativo (caminhada ou atividade livre)
-
-Rotina diária: Acorda às 05h30, trabalha das 08h às 18h em escritório (postura sentada > 80% do tempo), chega em casa às 19h. Dorme entre 23h–24h em média. Sono relatado como fragmentado e não reparador — acorda 1–2 vezes por noite e demora a pegar no sono. Nível de estresse laboral: alto (gerência de equipe, metas mensais). Utiliza transporte público (metrô + ônibus, ~40 min cada trajeto).
-
-Nível de atividade física classificado como: Moderadamente ativo (PAF 1,55) — considerando os treinos programados mas natureza sedentária do trabalho e trajetos.`,
-  },
-  {
-    titulo: "Avaliação Gastrointestinal",
-    chips: ["Distensão abdominal", "Constipação leve"],
-    conteudo: `Hábito intestinal: Evacuação a cada 2 dias (constipação leve). Fezes tipo 3–4 na Escala de Bristol. Relata melhora com consumo de frutas e piora nos dias de maior estresse ou viagens. Nega sangramento, dor abdominal intensa ou mucorreia.
-
-Outros sintomas gastrointestinais: Distensão abdominal pós-prandial frequente, especialmente após almoço no trabalho. Refluxo esofágico leve relatado 1–2x/semana, sem medicação. Nega náuseas, vômitos ou diarreia crônica.
-
-Saúde bucal: Consulta odontológica regular. Nega bruxismo. Uso de fio dental diário.
-
-Investigação de intolerâncias: Possível sensibilidade à lactose (testada empiricamente — sintomas menores ao usar leite sem lactose). Nega alergia alimentar diagnosticada. Sensibilidade ao glúten investigada em 2023 (IgA anti-gliadina normal) — descartada doença celíaca, mas possível sensibilidade não-celíaca (subjetiva).`,
-  },
-  {
-    titulo: "Objetivos, Metas e Expectativas",
-    chips: ["Meta realista", "Prazo 12 meses", "Engajada"],
-    conteudo: `Objetivos declarados pela paciente:
-1. Perda de peso: atingir 68–70 kg (redução de ~7–9 kg do peso atual de 78 kg)
-2. Melhora da composição corporal: reduzir % de gordura de 32,8% para ~24–26%
-3. Normalização do colesterol LDL e triglicerídeos sem uso de estatinas
-4. Melhora da qualidade do sono e do nível de energia diário
-5. Criar relação mais saudável com a comida (reduzir comer emocional)
-
-Expectativas de prazo: Casamento em dezembro/2026 (9 meses) — objetivo de estar próxima da meta até esse momento. Entende que o processo é gradual e declara estar comprometida com mudanças de longo prazo, não apenas perda temporária de peso.
-
-Motivadores identificados: casamento, resultados de exames preocupantes, exemplo de saúde para filhos futuros, histórico familiar de doenças metabólicas, melhora da autoestima e disposição.
-
-Barreiras identificadas: rotina de trabalho intensa, alimentação fora de casa 5x/semana, fome emocional em momentos de estresse, sleep deprivation que aumenta grelina e reduz saciedade.
-
-Plano de acompanhamento: Retorno a cada 30 dias nas primeiras 3 avaliações, depois a cada 45–60 dias conforme progresso.`,
+    nome: "Possível sensibilidade à lactose",
+    detalhe: "Não diagnosticada formalmente. Melhora sintomática com leite zero lactose.",
   },
 ];
 
+/* ─── Histórico Familiar ─────────────────────────────── */
+const HISTORICO_FAMILIAR = [
+  { parentesco: "Mãe", condicoes: "Obesidade (IMC 32), diabetes tipo 2, hipotireoidismo" },
+  { parentesco: "Pai", condicoes: "Hipertensão arterial, dislipidemia em tratamento farmacológico" },
+  { parentesco: "Avó materna", condicoes: "Doença cardiovascular" },
+];
+
+/* ─── Adesão à Dieta ─────────────────────────────────── */
+const ADESAO = {
+  status: "Parcialmente" as "Sim" | "Parcialmente" | "Não",
+  obs: "Boa adesão nos dias de treino; descontrole noturno em dias de maior estresse laboral.",
+};
+
+/* ─── Notas Livres ───────────────────────────────────── */
+const BLOCO_TEXTO =
+  "Paciente motivada pelo casamento em dezembro/2026 e pelos resultados preocupantes dos exames de fevereiro. Reconhece relação emocional com a comida em situações de estresse. Histórico de dietas restritivas sem sucesso duradouro. Prioridade: reeducação alimentar sustentável + abordagem do comer emocional.";
+
+/* ─── Sub-componentes ────────────────────────────────── */
+function RotinaCatItem({
+  horario,
+  nome,
+  descricao,
+}: {
+  horario: string;
+  nome: string;
+  descricao: string;
+}) {
+  return (
+    <div className="border border-slate-200 rounded-xl px-4 py-3">
+      <div className="flex items-baseline gap-2">
+        <span className="font-semibold text-sm text-slate-800">{nome}</span>
+        <span className="text-[11px] text-slate-400">{horario}</span>
+      </div>
+      <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">{descricao}</p>
+    </div>
+  );
+}
+
+function DataGrid({ items }: { items: { label: string; value: string }[] }) {
+  return (
+    <div className="grid grid-cols-2 gap-2">
+      {items.map(({ label, value }) => (
+        <div key={label} className="border border-slate-200 rounded-xl px-4 py-3">
+          <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">{label}</div>
+          <div className="text-sm font-semibold text-slate-800">{value}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ─── Componente principal ───────────────────────────── */
 export function AnamneseTab() {
+  const adesaoCor =
+    ADESAO.status === "Sim"
+      ? "bg-emerald-50 border-emerald-200 text-emerald-700"
+      : ADESAO.status === "Parcialmente"
+      ? "bg-amber-50 border-amber-200 text-amber-700"
+      : "bg-red-50 border-red-200 text-red-700";
+
   return (
     <div>
-      {SECOES.map((secao, i) => (
-        <ExportSection key={i} title={secao.titulo}>
-          <Card shadow="none" classNames={{ base: "border border-slate-200" }}>
-            {secao.chips.length > 0 && (
-              <CardHeader className="pb-2">
-                <div className="flex gap-1.5 flex-wrap">
-                  {secao.chips.map(chip => (
-                    <Chip key={chip} size="sm" variant="flat" color="default">{chip}</Chip>
-                  ))}
-                </div>
-              </CardHeader>
-            )}
-            <CardBody className={secao.chips.length > 0 ? "pt-0" : ""}>
-              {secao.conteudo.split("\n").filter(Boolean).map((paragrafo, pi) => (
-                <p key={pi} className="text-xs text-slate-600 leading-relaxed mb-2 last:mb-0">
-                  {paragrafo}
-                </p>
+
+      {/* ── Rotina do Dia ───────────────────────────────── */}
+      <ExportSection title="Rotina do Dia">
+        <div className="space-y-4">
+
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-2">Refeições</p>
+            <div className="space-y-2">
+              {REFEICOES.map((r) => (
+                <RotinaCatItem key={r.nome} horario={r.horario} nome={r.nome} descricao={r.descricao} />
               ))}
-            </CardBody>
-          </Card>
-        </ExportSection>
-      ))}
+            </div>
+          </div>
+
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-2">Exercícios</p>
+            <div className="space-y-2">
+              {EXERCICIOS.map((e) => (
+                <RotinaCatItem key={e.nome} horario={e.horario} nome={e.nome} descricao={e.descricao} />
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-2">Remédios</p>
+            <div className="space-y-2">
+              {REMEDIOS.map((r) => (
+                <RotinaCatItem key={r.nome} horario={r.horario} nome={r.nome} descricao={r.descricao} />
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-2">Suplementos</p>
+            <div className="space-y-2">
+              {SUPLEMENTOS.map((s) => (
+                <RotinaCatItem key={s.nome} horario={s.horario} nome={s.nome} descricao={s.descricao} />
+              ))}
+            </div>
+          </div>
+
+        </div>
+      </ExportSection>
+
+      {/* ── Hidratação ──────────────────────────────────── */}
+      <ExportSection title="Hidratação">
+        <div className="mb-4 flex items-baseline gap-3">
+          <span className="text-3xl font-extrabold text-slate-800">{HIDRATACAO.litros} L</span>
+          <span className="text-sm text-slate-400">{HIDRATACAO.copos} copos (250 ml) · estimativa</span>
+        </div>
+        <DataGrid
+          items={[
+            { label: "Perfil", value: HIDRATACAO.perfil },
+            { label: "Recomendado", value: HIDRATACAO.recomendado },
+          ]}
+        />
+      </ExportSection>
+
+      {/* ── Sono ────────────────────────────────────────── */}
+      <ExportSection title="Sono">
+        <div className="mb-4 flex items-baseline gap-3">
+          <span className="text-3xl font-extrabold text-slate-800">{SONO.horas} h</span>
+          <span className="text-sm text-slate-400">de sono · acorda {SONO.acorda}</span>
+        </div>
+        <DataGrid
+          items={[
+            { label: "Satisfação", value: SONO.satisfacao },
+            { label: "Interferência no dia", value: SONO.interferencia },
+            { label: "Preocupação", value: SONO.preocupacao },
+            { label: `Score ISI  (/${SONO.scoreMax})`, value: `${SONO.scoreISI} — ${SONO.classificacao}` },
+          ]}
+        />
+        {SONO.obs && (
+          <p className="text-xs text-slate-500 italic mt-3">{SONO.obs}</p>
+        )}
+      </ExportSection>
+
+      {/* ── Hábito Intestinal ───────────────────────────── */}
+      <ExportSection title="Hábito Intestinal">
+        <div className="space-y-3">
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-2">Bristol e Frequência</p>
+            <DataGrid
+              items={[
+                { label: "Bristol", value: GI.bristol },
+                { label: "Frequência", value: GI.frequencia },
+              ]}
+            />
+          </div>
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-2">Sintomas Gastrointestinais</p>
+            <DataGrid
+              items={[
+                { label: "Inchaço", value: GI.inchaco },
+                { label: "Gases", value: GI.gases },
+                { label: "Dor abdominal", value: GI.dorAbdominal },
+                { label: "Refluxo", value: GI.refluxo },
+              ]}
+            />
+          </div>
+          <div className="border border-slate-200 rounded-xl px-4 py-3">
+            <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">GI Score</div>
+            <div className="flex items-baseline gap-2">
+              <span className="text-lg font-extrabold text-slate-800">{GI.giScore}/{GI.giScoreMax}</span>
+              <Chip size="sm" variant="flat" color="warning">{GI.classificacaoGI}</Chip>
+            </div>
+          </div>
+        </div>
+      </ExportSection>
+
+      {/* ── Problemas de Saúde ──────────────────────────── */}
+      <ExportSection title="Problemas de Saúde">
+        <div className="space-y-2">
+          {PROBLEMAS_SAUDE.map((p) => (
+            <div key={p.nome} className="border border-slate-200 rounded-xl px-4 py-3">
+              <p className="text-sm font-semibold text-slate-800">{p.nome}</p>
+              <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">{p.detalhe}</p>
+            </div>
+          ))}
+        </div>
+      </ExportSection>
+
+      {/* ── Histórico Familiar ──────────────────────────── */}
+      <ExportSection title="Histórico Familiar">
+        <div className="space-y-2">
+          {HISTORICO_FAMILIAR.map((h) => (
+            <div key={h.parentesco} className="border border-slate-200 rounded-xl px-4 py-3 flex items-start gap-4">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 w-20 flex-shrink-0 pt-0.5">{h.parentesco}</span>
+              <span className="text-xs text-slate-700 leading-relaxed">{h.condicoes}</span>
+            </div>
+          ))}
+        </div>
+      </ExportSection>
+
+      {/* ── Medicações ──────────────────────────────────── */}
+      <ExportSection title="Medicações">
+        <div className="space-y-2">
+          {REMEDIOS.map((r) => (
+            <div key={r.nome} className="border border-slate-200 rounded-xl px-4 py-3">
+              <div className="flex items-baseline gap-2">
+                <span className="text-sm font-semibold text-slate-800">{r.nome}</span>
+                <span className="text-[11px] text-slate-400">{r.horario}</span>
+              </div>
+              <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">{r.descricao}</p>
+            </div>
+          ))}
+        </div>
+      </ExportSection>
+
+      {/* ── Adesão à Dieta ──────────────────────────────── */}
+      <ExportSection title="Adesão à Dieta">
+        <div className={`border rounded-xl px-6 py-5 text-center mb-3 ${adesaoCor}`}>
+          <p className="text-xl font-bold">{ADESAO.status}</p>
+        </div>
+        {ADESAO.obs && (
+          <p className="text-xs text-slate-500 leading-relaxed">{ADESAO.obs}</p>
+        )}
+      </ExportSection>
+
+      {/* ── Bloco de Texto ──────────────────────────────── */}
+      <ExportSection title="Observações Clínicas">
+        <div className="border border-slate-200 rounded-xl px-4 py-3">
+          <p className="text-xs text-slate-600 leading-relaxed">{BLOCO_TEXTO}</p>
+        </div>
+      </ExportSection>
+
     </div>
   );
 }

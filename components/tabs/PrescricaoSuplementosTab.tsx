@@ -129,33 +129,20 @@ const SUPLEMENTOS = [
 export function PrescricaoSuplementosTab() {
   return (
     <div>
-      <Card shadow="none" classNames={{ base: "border border-blue-100 bg-blue-50 mb-5" }}>
-        <CardBody className="py-3">
-          <p className="text-xs text-blue-800">
-            <span className="font-semibold">Protocolo vigente desde 11/03/2026.</span> Suplementação individualizada com base em exames laboratoriais e avaliação nutricional.
-            Reavaliação em 90 dias ou conforme evolução dos exames.
-          </p>
-        </CardBody>
-      </Card>
-
       {SUPLEMENTOS.map((sup, i) => (
         <Card key={i} shadow="none" classNames={{ base: "border border-slate-200 mb-3" }}>
           <CardHeader className="pb-2">
             <div className="flex justify-between items-start w-full flex-wrap gap-2">
               <div>
+                <span className="font-mono font-bold text-slate-500 text-sm mr-2">{sup.dosagem}</span>
                 <span className="font-bold text-slate-900">{sup.nome}</span>
                 <span className="text-xs text-slate-400 ml-2">{sup.marca}</span>
               </div>
               <Chip size="sm" variant="flat" color={sup.cor}>{sup.categoria}</Chip>
             </div>
+            <p className="text-[11px] text-slate-400 mt-1">{sup.forma} · {sup.frequencia} · {sup.via}</p>
           </CardHeader>
           <CardBody className="pt-0">
-            <div className="flex flex-wrap gap-2 mb-3">
-              <Chip size="sm" variant="bordered">{sup.forma}</Chip>
-              <Chip size="sm" variant="bordered" color="primary">{sup.dosagem}</Chip>
-              <Chip size="sm" variant="bordered">{sup.frequencia}</Chip>
-              <Chip size="sm" variant="bordered">{sup.via}</Chip>
-            </div>
             <div className="text-xs text-slate-600 space-y-1">
               <p><span className="font-semibold text-slate-700">Horário:</span> {sup.horario}</p>
               <p className="text-slate-500 leading-relaxed mt-1">{sup.orientacao}</p>
