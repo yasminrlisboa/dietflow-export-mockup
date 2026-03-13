@@ -130,13 +130,6 @@ function DataGrid({ items }: { items: { label: string; value: string }[] }) {
 
 /* ─── Componente principal ───────────────────────────── */
 export function AnamneseTab() {
-  const adesaoCor =
-    ADESAO.status === "Sim"
-      ? "bg-emerald-50 border-emerald-200 text-emerald-700"
-      : ADESAO.status === "Parcialmente"
-      ? "bg-amber-50 border-amber-200 text-amber-700"
-      : "bg-red-50 border-red-200 text-red-700";
-
   return (
     <div>
 
@@ -290,12 +283,16 @@ export function AnamneseTab() {
 
       {/* ── Adesão à Dieta ──────────────────────────────── */}
       <ExportSection title="Adesão à Dieta">
-        <div className={`border rounded-xl px-6 py-5 text-center mb-3 ${adesaoCor}`}>
-          <p className="text-xl font-bold">{ADESAO.status}</p>
+        <div className="border border-slate-200 rounded-xl px-4 py-3">
+          <div className="flex items-center gap-2 mb-1">
+            <Chip size="sm" variant="flat" color={ADESAO.status === "Sim" ? "success" : ADESAO.status === "Parcialmente" ? "warning" : "danger"}>
+              {ADESAO.status}
+            </Chip>
+          </div>
+          {ADESAO.obs && (
+            <p className="text-xs text-slate-500 leading-relaxed">{ADESAO.obs}</p>
+          )}
         </div>
-        {ADESAO.obs && (
-          <p className="text-xs text-slate-500 leading-relaxed">{ADESAO.obs}</p>
-        )}
       </ExportSection>
 
       {/* ── Bloco de Texto ──────────────────────────────── */}
