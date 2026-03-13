@@ -28,17 +28,17 @@ export function ExportHeader() {
       </div>
 
       {/* Patient bar */}
-      <div className="flex items-center justify-between mt-4 px-4 py-3 bg-slate-50 rounded-xl border border-slate-100">
-        <span className="text-base font-bold text-slate-900">Ana Silva Santos</span>
-        <div className="flex gap-6">
-          <span className="text-sm text-slate-500">
-            <span className="font-medium text-slate-700">Idade:</span> 32 anos
+      <div className="flex items-center justify-between mt-4 px-4 py-2 bg-slate-50 rounded-xl border border-slate-100">
+        <span className="text-sm font-semibold text-slate-800">Ana Silva Santos</span>
+        <div className="flex gap-5">
+          <span className="text-xs text-slate-500">
+            <span className="font-medium text-slate-600">Idade:</span> 32 anos
           </span>
-          <span className="text-sm text-slate-500">
-            <span className="font-medium text-slate-700">Telefone:</span> (11) 99876-5432
+          <span className="text-xs text-slate-500">
+            <span className="font-medium text-slate-600">Telefone:</span> (11) 99876-5432
           </span>
-          <span className="text-sm text-slate-500">
-            <span className="font-medium text-slate-700">Data:</span> 11/03/2026
+          <span className="text-xs text-slate-500">
+            <span className="font-medium text-slate-600">Data:</span> 11/03/2026
           </span>
         </div>
       </div>
