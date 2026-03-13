@@ -1,6 +1,10 @@
 "use client";
-import { Card, CardBody, CardHeader, Chip, Progress, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Divider } from "@heroui/react";
+import { Card, CardBody, CardHeader, Chip, Progress, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@heroui/react";
 import { ExportSection } from "../ExportSection";
+import {
+  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip,
+  ResponsiveContainer, Legend, ReferenceLine,
+} from "recharts";
 
 const AVALIACOES = [
   { data: "Jan/2025", peso: 85.2, imc: 30.2, gordura: 38.5, massaMagra: 52.4, circ: 94, classGordura: "Obeso I" },
@@ -93,6 +97,80 @@ export function EvolucaoTab() {
             </div>
             <div className="mt-3 text-xs text-slate-500">
               <span className="font-medium text-slate-700">{realizado.toFixed(1)} kg</span> perdidos em <span className="font-medium text-slate-700">10 meses</span> · média de <span className="font-medium text-slate-700">0,72 kg/mês</span>
+            </div>
+          </CardBody>
+        </Card>
+      </ExportSection>
+
+      {/* Gráfico — métricas principais */}
+      <ExportSection title="Evolução das Métricas Principais">
+        <Card shadow="none" classNames={{ base: "border border-slate-100 mb-3" }}>
+          <CardHeader className="pb-0 pt-3 px-4">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+              Peso · IMC · % Gordura · Massa Magra — Jan/2025 a Nov/2025
+            </span>
+          </CardHeader>
+          <CardBody className="pt-1 pb-4">
+            <div className="h-56">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart
+                  data={AVALIACOES.map(av => ({
+                    data: av.data,
+                    "Peso (kg)": av.peso,
+                    "IMC": av.imc,
+                    "% Gordura": av.gordura,
+                    "Massa Magra (kg)": av.massaMagra,
+                  }))}
+                  margin={{ top: 8, right: 16, bottom: 0, left: 0 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                  <XAxis dataKey="data" tick={{ fontSize: 10, fill: "#94a3b8" }} />
+                  <YAxis tick={{ fontSize: 10, fill: "#94a3b8" }} width={36} domain={["auto", "auto"]} />
+                  <Tooltip contentStyle={{ fontSize: 11, borderRadius: 8, border: "1px solid #e2e8f0" }} />
+                  <Legend wrapperStyle={{ fontSize: 10 }} iconType="circle" iconSize={8} />
+                  <Line type="monotone" dataKey="Peso (kg)"       stroke="#6366f1" strokeWidth={2} dot={{ r: 3 }} activeDot={{ r: 5 }} />
+                  <Line type="monotone" dataKey="IMC"             stroke="#f59e0b" strokeWidth={2} dot={{ r: 3 }} activeDot={{ r: 5 }} />
+                  <Line type="monotone" dataKey="% Gordura"       stroke="#ef4444" strokeWidth={2} dot={{ r: 3 }} activeDot={{ r: 5 }} />
+                  <Line type="monotone" dataKey="Massa Magra (kg)" stroke="#10b981" strokeWidth={2} dot={{ r: 3 }} activeDot={{ r: 5 }} />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          </CardBody>
+        </Card>
+      </ExportSection>
+
+      {/* Gráfico — circunferências */}
+      <ExportSection title="Evolução das Circunferências">
+        <Card shadow="none" classNames={{ base: "border border-slate-100 mb-3" }}>
+          <CardHeader className="pb-0 pt-3 px-4">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+              Circunferências (cm) — Jan/2025 a Nov/2025
+            </span>
+          </CardHeader>
+          <CardBody className="pt-1 pb-4">
+            <div className="h-56">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart
+                  data={AVALIACOES.map((av, i) => ({
+                    data: av.data,
+                    ...Object.fromEntries(CIRCUNFERENCIAS.map(c => [c.nome, c.valores[i]])),
+                  }))}
+                  margin={{ top: 8, right: 16, bottom: 0, left: 0 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                  <XAxis dataKey="data" tick={{ fontSize: 10, fill: "#94a3b8" }} />
+                  <YAxis tick={{ fontSize: 10, fill: "#94a3b8" }} width={36} unit=" cm" domain={["auto", "auto"]} />
+                  <Tooltip contentStyle={{ fontSize: 11, borderRadius: 8, border: "1px solid #e2e8f0" }} formatter={(v: any) => [`${v} cm`]} />
+                  <Legend wrapperStyle={{ fontSize: 10 }} iconType="circle" iconSize={8} />
+                  {CIRCUNFERENCIAS.map((c, i) => (
+                    <Line
+                      key={c.nome} type="monotone" dataKey={c.nome}
+                      stroke={["#6366f1","#f59e0b","#ef4444","#10b981","#8b5cf6"][i]}
+                      strokeWidth={2} dot={{ r: 3 }} activeDot={{ r: 5 }}
+                    />
+                  ))}
+                </LineChart>
+              </ResponsiveContainer>
             </div>
           </CardBody>
         </Card>
