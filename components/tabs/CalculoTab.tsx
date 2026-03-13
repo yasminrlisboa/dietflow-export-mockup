@@ -27,7 +27,6 @@ export function CalculoTab() {
               {[
                 { label: "Peso", value: "78,0 kg" },
                 { label: "Altura", value: "168 cm" },
-                { label: "Idade", value: "32 anos" },
                 { label: "Sexo", value: "Feminino" },
                 { label: "Massa Magra", value: "52,4 kg" },
                 { label: "% Gordura", value: "32,8%" },

@@ -29,11 +29,8 @@ export function ExportHeader() {
 
       {/* Patient bar */}
       <div className="flex items-center justify-between mt-4 px-4 py-2 bg-slate-50 rounded-xl border border-slate-100">
-        <span className="text-sm font-semibold text-slate-800">Ana Silva Santos</span>
+        <span className="text-sm font-semibold text-slate-800">Yasmin Helene T. Lisboa Provedel</span>
         <div className="flex gap-5">
-          <span className="text-xs text-slate-500">
-            <span className="font-medium text-slate-600">Idade:</span> 32 anos
-          </span>
           <span className="text-xs text-slate-500">
             <span className="font-medium text-slate-600">Telefone:</span> (11) 99876-5432
           </span>
