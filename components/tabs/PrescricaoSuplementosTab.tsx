@@ -1,5 +1,5 @@
 "use client";
-import { Card, CardBody, CardHeader, Chip, Divider } from "@heroui/react";
+import { Chip } from "@heroui/react";
 import { ExportSection } from "../ExportSection";
 import { ExportAssinatura } from "../ExportAssinatura";
 
@@ -67,9 +67,9 @@ const SUPLEMENTOS = [
   {
     nome: "Vitamina B12 (Metilcobalamina)",
     marca: "Sundown",
-    forma: "Comprimidos sublinguais",
+    forma: "Comprimido sublingual",
     dosagem: "1.000mcg",
-    frequencia: "Semanal (2x/semana)",
+    frequencia: "2x por semana",
     via: "Sublingual",
     horario: "Manhã, em jejum",
     orientacao: "Forma metilcobalamina é mais biodisponível que a cianocobalamina. Manter sob a língua por 30–60 segundos antes de engolir.",
@@ -80,10 +80,10 @@ const SUPLEMENTOS = [
     nome: "Zinco Quelado (ZMA)",
     marca: "Max Titanium",
     forma: "Cápsulas",
-    dosagem: "30mg de zinco + 450mg de magnésio + B6",
+    dosagem: "30mg zinco + 450mg magnésio + B6",
     frequencia: "Diária",
     via: "Oral",
-    horario: "30–60 minutos antes de dormir, em jejum ou 2h após refeição",
+    horario: "30–60 min antes de dormir, em jejum ou 2h após refeição",
     orientacao: "Não tomar junto com cálcio (competição de absorção). Auxilia na recuperação muscular, síntese hormonal e qualidade do sono.",
     categoria: "Mineral",
     cor: "default" as const,
@@ -104,7 +104,7 @@ const SUPLEMENTOS = [
     nome: "Probiótico Multicepa",
     marca: "Floratil",
     forma: "Sachê",
-    dosagem: "5 bilhões UFC (Saccharomyces boulardii + Lactobacillus acidophilus)",
+    dosagem: "5 bilhões UFC",
     frequencia: "Diária",
     via: "Oral",
     horario: "Com o café da manhã",
@@ -130,37 +130,63 @@ export function PrescricaoSuplementosTab() {
   return (
     <div>
       {SUPLEMENTOS.map((sup, i) => (
-        <Card key={i} shadow="none" classNames={{ base: "border border-slate-200 mb-3" }}>
-          <CardHeader className="pb-2">
-            <div className="flex justify-between items-start w-full flex-wrap gap-2">
-              <div>
-                <span className="font-mono font-bold text-slate-500 text-sm mr-2">{sup.dosagem}</span>
-                <span className="font-bold text-slate-900">{sup.nome}</span>
-                <span className="text-xs text-slate-400 ml-2">{sup.marca}</span>
-              </div>
+        <ExportSection key={i} title={`${i + 1}. ${sup.nome}`}>
+          <div className="border border-slate-200 rounded-xl overflow-hidden">
+
+            {/* Marca + categoria */}
+            <div className="flex items-center justify-between px-4 py-2.5 bg-slate-50">
+              <span className="text-xs text-slate-500">{sup.marca}</span>
               <Chip size="sm" variant="flat" color={sup.cor}>{sup.categoria}</Chip>
             </div>
-            <p className="text-[11px] text-slate-400 mt-1">{sup.forma} · {sup.frequencia} · {sup.via}</p>
-          </CardHeader>
-          <CardBody className="pt-0">
-            <div className="text-xs text-slate-600 space-y-1">
-              <p><span className="font-semibold text-slate-700">Horário:</span> {sup.horario}</p>
-              <p className="text-slate-500 leading-relaxed mt-1">{sup.orientacao}</p>
+
+            {/* Dosagem + forma + frequência + via */}
+            <div className="grid grid-cols-4 border-t border-slate-100">
+              {[
+                { label: "Dosagem",    value: sup.dosagem    },
+                { label: "Forma",      value: sup.forma      },
+                { label: "Frequência", value: sup.frequencia },
+                { label: "Via",        value: sup.via        },
+              ].map(({ label, value }) => (
+                <div key={label} className="px-4 py-2.5 border-r border-slate-100 last:border-r-0">
+                  <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-0.5">{label}</div>
+                  <div className="text-sm font-semibold text-slate-800">{value}</div>
+                </div>
+              ))}
             </div>
-          </CardBody>
-        </Card>
+
+            {/* Horário */}
+            <div className="border-t border-slate-100 px-4 py-2.5">
+              <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-0.5">Horário</div>
+              <p className="text-sm text-slate-700">{sup.horario}</p>
+            </div>
+
+            {/* Orientações */}
+            <div className="border-t border-slate-100 px-4 py-2.5">
+              <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-0.5">Orientações</div>
+              <p className="text-xs text-slate-500 leading-relaxed">{sup.orientacao}</p>
+            </div>
+
+          </div>
+        </ExportSection>
       ))}
 
       <ExportSection title="Observações Gerais">
-        <Card shadow="none" classNames={{ base: "border border-slate-200" }}>
-          <CardBody className="text-xs text-slate-600 leading-relaxed space-y-1.5">
-            <p>• Manter hidratação adequada (mínimo 35ml/kg de peso corporal/dia = ~2,7L/dia).</p>
-            <p>• Suplementação não substitui alimentação equilibrada — os alimentos devem ser a base do aporte nutricional.</p>
-            <p>• Em caso de eventos adversos (alergias, desconforto gastrointestinal, alterações de sono), suspender o suplemento e informar a nutricionista.</p>
-            <p>• Não associar suplementos não listados sem orientação profissional prévia.</p>
-            <p>• Guardar todos os suplementos em local fresco, seco e ao abrigo da luz solar direta.</p>
-          </CardBody>
-        </Card>
+        <div className="border border-slate-200 rounded-xl px-4 py-3">
+          <div className="text-xs text-slate-600 leading-relaxed space-y-1.5">
+            {[
+              "Manter hidratação adequada (mínimo 35ml/kg de peso corporal/dia = ~2,7L/dia).",
+              "Suplementação não substitui alimentação equilibrada — os alimentos devem ser a base do aporte nutricional.",
+              "Em caso de eventos adversos (alergias, desconforto gastrointestinal, alterações de sono), suspender o suplemento e informar a nutricionista.",
+              "Não associar suplementos não listados sem orientação profissional prévia.",
+              "Guardar todos os suplementos em local fresco, seco e ao abrigo da luz solar direta.",
+            ].map((txt, i) => (
+              <div key={i} className="flex items-start gap-2">
+                <div className="w-1 h-1 rounded-full bg-slate-400 flex-shrink-0 mt-1.5" />
+                <p>{txt}</p>
+              </div>
+            ))}
+          </div>
+        </div>
       </ExportSection>
 
       <ExportAssinatura />
